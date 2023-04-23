@@ -1,0 +1,36 @@
+.mesa {
+    display: flex;
+    flex-direction: column;
+}
+
+.linha {
+    display: flex;
+    flex-direction: row;
+}
+
+.casa {
+    width: 100px;
+    height: 100px;
+}
+
+.linha-impar .casa:nth-child(odd), .linha-par .casa:nth-child(even) {
+    background-color: black;
+}
+
+.linha-impar .casa:nth-child(even), .linha-par .casa:nth-child(odd) {
+    background-color: white;
+}
+
+.peca {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: grab;
+}
+
+.peca img {
+    height: 100%;
+}
