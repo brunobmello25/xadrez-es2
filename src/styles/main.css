@@ -14,11 +14,11 @@
 }
 
 .linha-impar .casa:nth-child(odd), .linha-par .casa:nth-child(even) {
-    background-color: black;
+    background-color: white;
 }
 
 .linha-impar .casa:nth-child(even), .linha-par .casa:nth-child(odd) {
-    background-color: white;
+    background-color: black;
 }
 
 .peca {
@@ -34,3 +34,4 @@
 .peca img {
     height: 100%;
 }
+
