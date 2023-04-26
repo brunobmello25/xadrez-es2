@@ -1,57 +1,57 @@
 import './styles'
 
 export function main() {
-  atualizaTabuleiro();
+  updateBoard();
 }
 
 
 
-function criaPeca(cor, tipo) {
+function makePiece(color, type) {
   return {
-    cor,
-    tipo
+    color,
+    type
   }
 }
 
-function criaTabuleiro() {
-  const tabuleiro = Array(8).fill([]).map(() => Array(8).fill(null));
+function makeBoard() {
+  const board = Array(8).fill([]).map(() => Array(8).fill(null));
 
-  tabuleiro[0][0] = criaPeca('preto', 'torre');
-  tabuleiro[0][1] = criaPeca('preto', 'cavalo');
-  tabuleiro[0][2] = criaPeca('preto', 'bispo');
-  tabuleiro[0][3] = criaPeca('preto', 'rei');
-  tabuleiro[0][4] = criaPeca('preto', 'rainha');
-  tabuleiro[0][5] = criaPeca('preto', 'bispo');
-  tabuleiro[0][6] = criaPeca('preto', 'cavalo');
-  tabuleiro[0][7] = criaPeca('preto', 'torre');
-
-  for (let i = 0; i < 8; i++) {
-    tabuleiro[1][i] = criaPeca('preto', 'peao');
-  }
-
-  tabuleiro[7][0] = criaPeca('branco', 'torre');
-  tabuleiro[7][1] = criaPeca('branco', 'cavalo');
-  tabuleiro[7][2] = criaPeca('branco', 'bispo');
-  tabuleiro[7][3] = criaPeca('branco', 'rei');
-  tabuleiro[7][4] = criaPeca('branco', 'rainha');
-  tabuleiro[7][5] = criaPeca('branco', 'bispo');
-  tabuleiro[7][6] = criaPeca('branco', 'cavalo');
-  tabuleiro[7][7] = criaPeca('branco', 'torre');
+  board[0][0] = makePiece('black', 'rook');
+  board[0][1] = makePiece('black', 'knight');
+  board[0][2] = makePiece('black', 'bishop');
+  board[0][3] = makePiece('black', 'queen');
+  board[0][4] = makePiece('black', 'king');
+  board[0][5] = makePiece('black', 'bishop');
+  board[0][6] = makePiece('black', 'knight');
+  board[0][7] = makePiece('black', 'rook');
 
   for (let i = 0; i < 8; i++) {
-    tabuleiro[6][i] = criaPeca('branco', 'peao');
+    board[1][i] = makePiece('black', 'pawn');
   }
 
-  return tabuleiro;
+  board[7][0] = makePiece('white', 'rook');
+  board[7][1] = makePiece('white', 'knight');
+  board[7][2] = makePiece('white', 'bishop');
+  board[7][3] = makePiece('white', 'queen');
+  board[7][4] = makePiece('white', 'king');
+  board[7][5] = makePiece('white', 'bishop');
+  board[7][6] = makePiece('white', 'knight');
+  board[7][7] = makePiece('white', 'rook');
+
+  for (let i = 0; i < 8; i++) {
+    board[6][i] = makePiece('white', 'pawn');
+  }
+
+  return board;
 }
 
-function criaElementoCasa(peca, x, y) {
+function makeCellElement(piece, x, y) {
   let html = "";
 
-  html += `<div class='casa' data-x='${x}' data-y='${y}'>`;
+  html += `<div class='cell' data-x='${x}' data-y='${y}'>`;
 
-  if (peca != null) {
-    html += `<div class='peca'><img src="images/${peca.tipo}-${peca.cor}.png" alt="" srcset=""></div>`;
+  if (piece != null) {
+    html += `<div class='piece'><img src="images/${piece.color}-${piece.type}.png" alt="" srcset=""></div>`;
   }
 
   html += `</div>`;
@@ -59,13 +59,13 @@ function criaElementoCasa(peca, x, y) {
   return html;
 }
 
-function criaConteudoElementoTabuleiro(tabuleiro) {
+function makeInnerBoardElement(board) {
   let html = '';
 
-  tabuleiro.forEach((linha, y) => {
-    html += `<div class='linha linha-${y % 2 == 0 ? 'par' : 'impar'}'>`;
-    linha.forEach((casa, x) => {
-      html += criaElementoCasa(casa, x, y);
+  board.forEach((line, y) => {
+    html += `<div class='line line-${y % 2 == 0 ? 'even' : 'odd'}'>`;
+    line.forEach((cell, x) => {
+      html += makeCellElement(cell, x, y);
     })
     html += "</div>";
   })
@@ -73,8 +73,8 @@ function criaConteudoElementoTabuleiro(tabuleiro) {
   return html;
 }
 
-function atualizaTabuleiro() {
-  const tabuleiro = document.querySelector('.tabuleiro');
+function updateBoard() {
+  const board = document.querySelector('.board');
 
-  tabuleiro.innerHTML = criaConteudoElementoTabuleiro(criaTabuleiro());
+  board.innerHTML = makeInnerBoardElement(makeBoard());
 }

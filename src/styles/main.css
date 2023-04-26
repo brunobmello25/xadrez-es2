@@ -1,27 +1,27 @@
-.tabuleiro {
+.board {
     display: flex;
     flex-direction: column;
 }
 
-.linha {
+.line {
     display: flex;
     flex-direction: row;
 }
 
-.casa {
+.cell {
     width: 100px;
     height: 100px;
 }
 
-.linha-impar .casa:nth-child(odd), .linha-par .casa:nth-child(even) {
-    background-color: white;
-}
-
-.linha-impar .casa:nth-child(even), .linha-par .casa:nth-child(odd) {
+.line-odd .cell:nth-child(odd), .line-even .cell:nth-child(even) {
     background-color: black;
 }
 
-.peca {
+.line-odd .cell:nth-child(even), .line-even .cell:nth-child(odd) {
+    background-color: white;
+}
+
+.piece {
     position: relative;
     height: 100%;
     display: flex;
@@ -31,7 +31,7 @@
     cursor: grab;
 }
 
-.peca img {
+.piece img {
     height: 100%;
 }
 
