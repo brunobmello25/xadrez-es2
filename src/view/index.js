@@ -22,14 +22,14 @@ export class View {
         const x = parseInt(e.currentTarget.dataset.x);
         const y = parseInt(e.currentTarget.dataset.y);
 
-        this.handleCellClick(new Coord(x, y));
+        this._handleCellClick(new Coord(x, y));
 
         this.updateBoard();
       })
     })
   }
 
-  handleCellClick(coord) {
+  _handleCellClick(coord) {
     if (!this.selectedCell) {
       this.selectedCell = coord;
       return;
