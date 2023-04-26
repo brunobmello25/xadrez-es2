@@ -8,6 +8,15 @@ export class Board {
     console.log(this.board)
   }
 
+  movePiece(from, to) {
+    const piece = this.board[from.y][from.x];
+
+    if (!piece) throw new Error('No piece to move');
+
+    this.board[from.y][from.x] = null;
+    this.board[to.y][to.x] = piece;
+  }
+
   _makeInitialBoard() {
     const board = Array(8).fill([]).map(() => Array(8).fill(null));
 
