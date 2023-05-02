@@ -1,14 +1,20 @@
+import { Board } from '../models/board';
 import { Coord } from '../models/coord'
 
 export class View {
-  constructor(board) {
-    this.board = board;
+  private board: Board;
+  private selectedCell: Coord | null;
+
+  constructor(board: Board) {
     this.selectedCell = null;
+    this.board = board;
   }
 
   updateBoard() {
     const target = document.querySelector('.board');
 
+    // TODO: validate this better
+    if (!target) return;
     target.innerHTML = this._makeInnerBoardElement(this.board.getViewMatrix());
 
     this._setEventListeners();
@@ -19,6 +25,9 @@ export class View {
 
     cells.forEach((cell) => {
       cell.addEventListener('click', (e) => {
+        if (!e.currentTarget) return;
+
+        // access data attributes data-x and data-y
         const x = parseInt(e.currentTarget.dataset.x);
         const y = parseInt(e.currentTarget.dataset.y);
 
@@ -29,7 +38,7 @@ export class View {
     })
   }
 
-  _handleCellClick(coord) {
+  _handleCellClick(coord: Coord) {
     // TODO: to much business logic here. Move these validations inside the board model class
     if (!this.selectedCell) {
       this.selectedCell = coord;
@@ -46,7 +55,7 @@ export class View {
     this.selectedCell = null;
   }
 
-  _makeInnerBoardElement(board) {
+  _makeInnerBoardElement(board: Board) {
     let html = '';
 
     board.forEach((line, y) => {

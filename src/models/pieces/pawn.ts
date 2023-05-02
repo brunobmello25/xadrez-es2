@@ -1,13 +1,15 @@
+import { Color, Matrix, Movable } from '../../protocols';
+import { Board } from '../board';
 import { Coord } from '../coord';
 import { Piece } from './piece'
 
-export class Pawn extends Piece {
-  constructor(color) {
+export class Pawn extends Piece implements Movable {
+  constructor(color: Color) {
     super('pawn', color);
   }
 
-  getMoveCoords(board, currentCoord) {
-    let coords = [];
+  getMoveCoords(board: Board, currentCoord: Coord) {
+    let coords: Array<Coord> = [];
     let direction = this.color == 'white' ? -1 : 1;
 
     let forwardCoord = currentCoord.offsetFromCurrent(0, direction);

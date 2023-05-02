@@ -1,12 +1,17 @@
+import { Comparable, Movable } from '../protocols';
+import { Coord } from './coord';
 import { King, Pawn, Rook, Queen, Bishop, Knight } from './pieces'
+import { Piece } from './pieces/piece';
 
 
 export class Board {
+  private boardMatrix: Array<Array<Piece | null>>;
+
   constructor() {
     this.boardMatrix = this._makeInitialBoard();
   }
 
-  movePiece(from, to) {
+  movePiece(from: Coord, to: Coord) {
     const piece = this.getFromCoord(from);
 
     if (!piece) throw new Error('No piece to move');
@@ -16,28 +21,28 @@ export class Board {
     piece.onMove();
   }
 
-  isEmpty(coord) {
+  isEmpty(coord: Coord) {
     return this.boardMatrix[coord.y][coord.x] == null;
   }
 
-  hasEnemy(piece, coord) {
+  hasEnemy(piece: Movable & Comparable, coord: Coord) {
     console.log({ boardMatrix: this.boardMatrix, piece, coord })
     const pieceInCoord = this.boardMatrix[coord.y][coord.x];
 
     if (!pieceInCoord) return false;
 
-    return pieceInCoord.color != piece.color;
+    return piece.isEnemy(pieceInCoord);
   }
 
-  getFromCoord(coord) {
+  getFromCoord(coord: Coord) {
     return this.boardMatrix[coord.y][coord.x];
   }
 
-  setInCoord(coord, piece) {
+  setInCoord(coord: Coord, piece: Piece | null) {
     this.boardMatrix[coord.y][coord.x] = piece;
   }
 
-  getPieceMoves(pieceCoord) {
+  getPieceMoves(pieceCoord: Coord) {
     const piece = this.getFromCoord(pieceCoord);
 
     if (!piece) throw new Error('No piece to move');
@@ -58,7 +63,7 @@ export class Board {
     })
   }
 
-  _makeInitialBoard() {
+  _makeInitialBoard(): Array<Array<Piece | null>> {
     const board = Array(8).fill([]).map(() => Array(8).fill(null));
 
     board[0][0] = new Rook('black');
