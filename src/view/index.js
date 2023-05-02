@@ -1,15 +1,15 @@
 import { Coord } from '../models/coord'
 
 export class View {
-  constructor(model) {
-    this.model = model;
+  constructor(board) {
+    this.board = board;
     this.selectedCell = null;
   }
 
   updateBoard() {
     const target = document.querySelector('.board');
 
-    target.innerHTML = this._makeInnerBoardElement(this.model.board);
+    target.innerHTML = this._makeInnerBoardElement(this.board.getViewMatrix());
 
     this._setEventListeners();
   }
@@ -30,8 +30,10 @@ export class View {
   }
 
   _handleCellClick(coord) {
+    // TODO: to much business logic here. Move these validations inside the board model class
     if (!this.selectedCell) {
       this.selectedCell = coord;
+      console.log(this.board.getPieceMoves(coord))
       return;
     }
 
@@ -40,7 +42,7 @@ export class View {
       return;
     }
 
-    this.model.movePiece(this.selectedCell, coord);
+    this.board.movePiece(this.selectedCell, coord);
     this.selectedCell = null;
   }
 

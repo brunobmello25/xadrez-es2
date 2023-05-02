@@ -3,18 +3,59 @@ import { King, Pawn, Rook, Queen, Bishop, Knight } from './pieces'
 
 export class Board {
   constructor() {
-    this.board = this._makeInitialBoard();
-
-    console.log(this.board)
+    this.boardMatrix = this._makeInitialBoard();
   }
 
   movePiece(from, to) {
-    const piece = this.board[from.y][from.x];
+    const piece = this.getFromCoord(from);
 
     if (!piece) throw new Error('No piece to move');
 
-    this.board[from.y][from.x] = null;
-    this.board[to.y][to.x] = piece;
+    this.setInCoord(from, null);
+    this.setInCoord(to, piece);
+    piece.onMove();
+  }
+
+  isEmpty(coord) {
+    return this.boardMatrix[coord.y][coord.x] == null;
+  }
+
+  hasEnemy(piece, coord) {
+    console.log({ boardMatrix: this.boardMatrix, piece, coord })
+    const pieceInCoord = this.boardMatrix[coord.y][coord.x];
+
+    if (!pieceInCoord) return false;
+
+    return pieceInCoord.color != piece.color;
+  }
+
+  getFromCoord(coord) {
+    return this.boardMatrix[coord.y][coord.x];
+  }
+
+  setInCoord(coord, piece) {
+    this.boardMatrix[coord.y][coord.x] = piece;
+  }
+
+  getPieceMoves(pieceCoord) {
+    const piece = this.getFromCoord(pieceCoord);
+
+    if (!piece) throw new Error('No piece to move');
+
+    return piece.getMoveCoords(this, pieceCoord);
+  }
+
+  getViewMatrix() {
+    return this.boardMatrix.map((line) => {
+      return line.map((piece) => {
+        if (!piece) return null;
+
+        return {
+          type: piece.type,
+          color: piece.color
+        }
+      });
+    })
   }
 
   _makeInitialBoard() {

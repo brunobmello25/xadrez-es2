@@ -5,8 +5,12 @@ export class Coord {
   }
 
   equals(other) {
-    if(other == null) return false;
+    if (other == null) return false;
 
     return this.x == other.x && this.y == other.y;
+  }
+
+  offsetFromCurrent(xOffset, yOffset) {
+    return new Coord(this.x + xOffset, this.y + yOffset);
   }
 }
