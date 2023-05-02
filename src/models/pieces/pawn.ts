@@ -31,12 +31,12 @@ export class Pawn {
     }
 
     let leftDiagonalCoord = currentCoord.offsetFromCurrent(-1, direction);
-    if (board.hasEnemy(this, leftDiagonalCoord)) {
+    if (board.hasEnemy(leftDiagonalCoord)) {
       coords.push(leftDiagonalCoord);
     }
 
     let rightDiagonalCoord = currentCoord.offsetFromCurrent(1, direction);
-    if (board.hasEnemy(this, rightDiagonalCoord)) {
+    if (board.hasEnemy(rightDiagonalCoord)) {
       coords.push(rightDiagonalCoord);
     }
 

@@ -1,14 +1,17 @@
-import { Board } from '../models/board';
-import { Coord } from '../models/coord'
-import { Matrix, ViewPiece } from '../protocols';
+import { Board } from './models/board';
+import { Coord } from './models/coord'
+import { Matrix, ViewPiece } from './protocols';
 
 export class View {
   board: Board;
-  selectedCell: Coord | null;
+
+  selectedCoord: Coord | null;
+
+  highlightedCoords: Coord[] = [];
 
   constructor(board: Board) {
     this.board = board;
-    this.selectedCell = null;
+    this.selectedCoord = null;
   }
 
   updateBoard() {
@@ -44,20 +47,41 @@ export class View {
   }
 
   private handleCellClick(coord: Coord) {
-    // TODO: to much business logic here. Move these validations inside the board model class
-    if (!this.selectedCell) {
-      this.selectedCell = coord;
-      console.log(this.board.getPieceMoves(coord))
-      return;
+    if (!this.selectedCoord) {
+      if (this.board.isEmpty(coord)) return;
+
+      if (this.board.isFriendly(coord)) {
+        this.selectedCoord = coord;
+        this.highlightedCoords = this.board.getPieceMoves(coord);
+        return;
+      }
+
+      if (this.board.hasEnemy(coord)) {
+        alert("Não é possível selecionar uma peça inimiga");
+        return
+      }
     }
 
-    if (!!this.selectedCell && coord.equals(this.selectedCell)) {
-      this.selectedCell = null;
-      return;
-    }
+    if (this.selectedCoord) {
+      if (this.selectedCoord.equals(coord)) {
+        this.selectedCoord = null;
+        this.highlightedCoords = [];
+        return;
+      }
 
-    this.board.movePiece(this.selectedCell, coord);
-    this.selectedCell = null;
+      if (this.board.isFriendly(coord)) {
+        this.selectedCoord = coord;
+        this.highlightedCoords = this.board.getPieceMoves(coord);
+        return;
+      }
+
+      if (this.board.canMove(this.selectedCoord, coord)) {
+        this.board.movePiece(this.selectedCoord, coord);
+        this.selectedCoord = null;
+        this.highlightedCoords = [];
+        return;
+      }
+    }
   }
 
   private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
@@ -78,8 +102,12 @@ export class View {
     let html = "";
 
     let classes = "cell";
-    if (this.selectedCell !== null && this.selectedCell.equals(new Coord(x, y))) {
+    if (this.selectedCoord !== null && this.selectedCoord.equals(new Coord(x, y))) {
       classes += " selected";
+    }
+
+    if (this.highlightedCoords.some((coord) => coord.equals(new Coord(x, y)))) {
+      classes += " highlighted";
     }
 
     html += `<div class="${classes}" data-x='${x}' data-y='${y}'>`;

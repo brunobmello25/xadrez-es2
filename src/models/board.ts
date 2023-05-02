@@ -1,4 +1,4 @@
-import { Matrix, Piece, PieceType, ViewPiece } from '../protocols';
+import { Color, Matrix, Piece, PieceType, ViewPiece } from '../protocols';
 import { King, Pawn, Rook, Queen, Bishop, Knight } from './pieces'
 import { Coord } from './coord';
 
@@ -7,8 +7,20 @@ export class Board {
 
   private boardMatrix: Matrix<Piece | null>;
 
+  private currentShift: Color = 'white';
+
   constructor() {
     this.boardMatrix = this.makeInitialBoard();
+  }
+
+  canMove(from: Coord, to: Coord) {
+    const piece = this.getFromCoord(from);
+
+    if (!piece) throw new Error('No piece to move');
+
+    const moves = piece.getValidMoves(this, from);
+
+    return moves.some((coord) => coord.equals(to));
   }
 
   movePiece(from: Coord, to: Coord) {
@@ -19,19 +31,20 @@ export class Board {
     this.setInCoord(from, null);
     this.setInCoord(to, piece);
     piece.onMove();
+    this.updateShift();
   }
 
   isEmpty(coord: Coord) {
     return this.boardMatrix[coord.y][coord.x] == null;
   }
 
-  hasEnemy(piece: Piece, coord: Coord) {
-    console.log({ boardMatrix: this.boardMatrix, piece, coord })
-    const pieceInCoord = this.boardMatrix[coord.y][coord.x];
+  isFriendly(coord: Coord) {
+    return this.boardMatrix[coord.y][coord.x]?.color === this.currentShift;
+  }
 
-    if (!pieceInCoord) return false;
-
-    return pieceInCoord.color != piece.color;
+  hasEnemy(coord: Coord) {
+    if (this.isEmpty(coord)) return false;
+    return this.boardMatrix[coord.y][coord.x]?.color !== this.currentShift;
   }
 
   getFromCoord(coord: Coord) {
@@ -93,5 +106,9 @@ export class Board {
     }
 
     return board;
+  }
+
+  private updateShift() {
+    this.currentShift = this.currentShift === 'white' ? 'black' : 'white';
   }
 }
