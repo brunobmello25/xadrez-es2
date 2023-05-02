@@ -1,6 +1,22 @@
+import { Color } from "../../protocols";
+import { Coord } from "../coord";
+
 export class Rook {
-  constructor(color) {
+  moveCount = 0;
+
+  color: Color;
+
+  type = "rook";
+
+  constructor(color: Color) {
     this.color = color;
-    this.type = 'rook';
+  }
+
+  onMove() {
+    this.moveCount += 1;
+  }
+
+  getValidMoves(): Coord[] {
+    return [];
   }
 }

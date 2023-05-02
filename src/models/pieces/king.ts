@@ -1,8 +1,22 @@
 import { Color } from "../../protocols";
-import { Piece } from "./piece";
+import { Coord } from "../coord";
 
-export class King extends Piece {
+export class King {
+  moveCount = 0;
+
+  color: Color;
+
+  type = "king";
+
   constructor(color: Color) {
-    super('king', color);
+    this.color = color;
+  }
+
+  onMove() {
+    this.moveCount += 1;
+  }
+
+  getValidMoves(): Coord[] {
+    return [];
   }
 }

@@ -1,44 +1,49 @@
 import { Board } from '../models/board';
 import { Coord } from '../models/coord'
+import { Matrix, ViewPiece } from '../protocols';
 
 export class View {
-  private board: Board;
-  private selectedCell: Coord | null;
+  board: Board;
+  selectedCell: Coord | null;
 
   constructor(board: Board) {
-    this.selectedCell = null;
     this.board = board;
+    this.selectedCell = null;
   }
 
   updateBoard() {
     const target = document.querySelector('.board');
 
-    // TODO: validate this better
-    if (!target) return;
-    target.innerHTML = this._makeInnerBoardElement(this.board.getViewMatrix());
+    if (!target) {
+      alert("Falha ao inicializar o jogo, Por favor recarregue a página.");
+      return;
+    }
 
-    this._setEventListeners();
+    target.innerHTML = this.makeInnerBoardElement(this.board.getViewMatrix());
+
+    this.setEventListeners();
   }
 
-  _setEventListeners() {
+  private setEventListeners() {
     const cells = document.querySelectorAll('.cell');
 
     cells.forEach((cell) => {
       cell.addEventListener('click', (e) => {
         if (!e.currentTarget) return;
 
-        // access data attributes data-x and data-y
+        // @ts-ignore
         const x = parseInt(e.currentTarget.dataset.x);
+        // @ts-ignore
         const y = parseInt(e.currentTarget.dataset.y);
 
-        this._handleCellClick(new Coord(x, y));
+        this.handleCellClick(new Coord(x, y));
 
         this.updateBoard();
       })
     })
   }
 
-  _handleCellClick(coord: Coord) {
+  private handleCellClick(coord: Coord) {
     // TODO: to much business logic here. Move these validations inside the board model class
     if (!this.selectedCell) {
       this.selectedCell = coord;
@@ -55,13 +60,13 @@ export class View {
     this.selectedCell = null;
   }
 
-  _makeInnerBoardElement(board: Board) {
+  private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
     let html = '';
 
     board.forEach((line, y) => {
       html += `<div class='line line-${y % 2 == 0 ? 'even' : 'odd'}'>`;
       line.forEach((cell, x) => {
-        html += this._makeCellElement(cell, x, y);
+        html += this.makeCellElement(cell, x, y);
       })
       html += "</div>";
     })
@@ -69,7 +74,7 @@ export class View {
     return html;
   }
 
-  _makeCellElement(piece, x, y) {
+  private makeCellElement(piece: ViewPiece | null, x: number, y: number) {
     let html = "";
 
     let classes = "cell";
@@ -80,7 +85,6 @@ export class View {
     html += `<div class="${classes}" data-x='${x}' data-y='${y}'>`;
 
     if (piece != null) {
-
       html += `<div class='piece'><img src="images/${piece.color}-${piece.type}.png" alt="" srcset=""></div>`;
     }
 

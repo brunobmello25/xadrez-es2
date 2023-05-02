@@ -1,6 +1,22 @@
+import { Color } from "../../protocols";
+import { Coord } from "../coord";
+
 export class Queen {
-  constructor(color) {
+  moveCount = 0;
+
+  color: Color;
+
+  type = "queen";
+
+  constructor(color: Color) {
     this.color = color;
-    this.type = 'queen';
+  }
+
+  onMove() {
+    this.moveCount += 1;
+  }
+
+  getValidMoves(): Coord[] {
+    return [];
   }
 }

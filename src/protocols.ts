@@ -1,17 +1,15 @@
-import { Board } from "./models/board";
-import { Coord } from "./models/coord";
-import { Piece } from "./models/pieces/piece";
+import { Bishop, King, Knight, Pawn, Queen, Rook } from "./models/pieces";
 
-export type Type = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king'
+export type Piece = Pawn | Rook | Knight | Bishop | Queen | King;
 
-export type Color = 'white' | 'black'
+export type Matrix<T> = T[][];
 
-export type Matrix<T> = Array<Array<T>>
+export type Color = 'white' | 'black';
 
-export interface Movable {
-  getMoveCoords(board: Board, currentCoord: Coord): Array<Coord>;
+export type PieceType = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king';
+
+export type ViewPiece = {
+  color: Color;
+  type: PieceType;
 }
 
-export interface Comparable {
-  isEnemy(piece: Piece): boolean;
-}
