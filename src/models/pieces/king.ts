@@ -1,4 +1,5 @@
 import { Color } from "../../protocols";
+import { Board } from "../board";
 import { Coord } from "../coord";
 
 export class King {
@@ -16,7 +17,20 @@ export class King {
     this.moveCount += 1;
   }
 
-  getValidMoves(): Coord[] {
-    return [];
+  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
+    const potentialMoves = [
+      new Coord(currentCoord.x + 1, currentCoord.y + 1),
+      new Coord(currentCoord.x + 1, currentCoord.y),
+      new Coord(currentCoord.x + 1, currentCoord.y - 1),
+      new Coord(currentCoord.x, currentCoord.y - 1),
+      new Coord(currentCoord.x - 1, currentCoord.y - 1),
+      new Coord(currentCoord.x - 1, currentCoord.y),
+      new Coord(currentCoord.x - 1, currentCoord.y + 1),
+      new Coord(currentCoord.x, currentCoord.y + 1),
+    ]
+
+    return potentialMoves.filter((coord) => {
+      return !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord));
+    });
   }
 }

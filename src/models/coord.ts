@@ -17,4 +17,8 @@ export class Coord {
   offsetFromCurrent(xOffset: number, yOffset: number) {
     return new Coord(this.x + xOffset, this.y + yOffset);
   }
+
+  isOffBoard() {
+    return this.x < 0 || this.x > 7 || this.y < 0 || this.y > 7;
+  }
 }
