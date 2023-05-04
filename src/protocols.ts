@@ -1,6 +1,5 @@
-import { Bishop, King, Knight, Pawn, Queen, Rook } from "./models/pieces";
-
-export type Piece = Pawn | Rook | Knight | Bishop | Queen | King;
+import { Board } from "./models/board";
+import { Coord } from "./models/coord";
 
 export type Matrix<T> = T[][];
 
@@ -13,3 +12,21 @@ export type ViewPiece = {
   type: PieceType;
 }
 
+export interface Movable {
+  moveCount: number;
+
+  getValidMoves(board: Board, currentCoord: Coord): Coord[];
+
+  onMove(): void;
+}
+
+export interface Comparable {
+  isEnemy(piece: Piece): boolean;
+
+  isFriendly(piece: Piece): boolean;
+}
+
+export interface Piece extends Movable, Comparable {
+  color: Color;
+  type: PieceType;
+}
