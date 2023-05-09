@@ -1,7 +1,7 @@
-import './styles'
+import "./styles";
 
-import { Board } from './models/board';
-import { View } from './view';
+import { Board } from "./models/board";
+import { View } from "./view";
 
 function main() {
   const board = new Board();

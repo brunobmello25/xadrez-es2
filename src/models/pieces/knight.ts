@@ -27,7 +27,7 @@ export class Knight {
       new Coord(currentCoord.x - 2, currentCoord.y - 1),
       new Coord(currentCoord.x - 2, currentCoord.y + 1),
       new Coord(currentCoord.x - 1, currentCoord.y + 2),
-    ]
+    ];
 
     return potentialMoves.filter((coord) => {
       return !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord));

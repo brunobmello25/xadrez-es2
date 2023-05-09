@@ -3,9 +3,9 @@ import { Coord } from "./models/coord";
 
 export type Matrix<T> = T[][];
 
-export type Color = 'white' | 'black';
+export type Color = "white" | "black";
 
-export type PieceType = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king';
+export type PieceType = "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
 
 export type ViewPiece = {
   color: Color;
