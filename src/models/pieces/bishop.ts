@@ -7,7 +7,7 @@ export class Bishop {
 
   moveCount = 0;
 
-  type = 'bishop'
+  type = "bishop";
 
   constructor(color: Color) {
     this.color = color;

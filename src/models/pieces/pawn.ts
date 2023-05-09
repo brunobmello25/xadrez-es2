@@ -1,10 +1,10 @@
-import { Color } from '../../protocols';
-import { Board } from '../board';
-import { Coord } from '../coord';
+import { Color } from "../../protocols";
+import { Board } from "../board";
+import { Coord } from "../coord";
 
 export class Pawn {
 
-  type = 'pawn';
+  type = "pawn";
 
   color: Color;
 
@@ -16,7 +16,7 @@ export class Pawn {
 
   getValidMoves(board: Board, currentCoord: Coord) {
     const coords = [];
-    const direction = this.color == 'white' ? -1 : 1;
+    const direction = this.color == "white" ? -1 : 1;
 
     const forwardCoord = currentCoord.offsetFromCurrent(0, direction);
     if (board.isEmpty(forwardCoord)) {

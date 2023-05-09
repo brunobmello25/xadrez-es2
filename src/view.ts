@@ -1,6 +1,6 @@
-import { Board } from './models/board';
-import { Coord } from './models/coord'
-import { Matrix, ViewPiece } from './protocols';
+import { Board } from "./models/board";
+import { Coord } from "./models/coord";
+import { Matrix, ViewPiece } from "./protocols";
 
 export class View {
   board: Board;
@@ -15,7 +15,7 @@ export class View {
   }
 
   updateBoard() {
-    const target = document.querySelector('.board');
+    const target = document.querySelector(".board");
 
     if (!target) {
       alert("Falha ao inicializar o jogo, Por favor recarregue a página.");
@@ -28,22 +28,24 @@ export class View {
   }
 
   private setEventListeners() {
-    const cells = document.querySelectorAll('.cell');
+    const cells = document.querySelectorAll(".cell");
 
     cells.forEach((cell) => {
-      cell.addEventListener('click', (e) => {
+      cell.addEventListener("click", (e) => {
         if (!e.currentTarget) return;
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const x = parseInt(e.currentTarget.dataset.x);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const y = parseInt(e.currentTarget.dataset.y);
 
         this.handleCellClick(new Coord(x, y));
 
         this.updateBoard();
-      })
-    })
+      });
+    });
   }
 
   private handleCellClick(coord: Coord) {
@@ -58,7 +60,7 @@ export class View {
 
       if (this.board.hasEnemy(coord)) {
         alert("Não é possível selecionar uma peça inimiga");
-        return
+        return;
       }
     }
 
@@ -85,15 +87,15 @@ export class View {
   }
 
   private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
-    let html = '';
+    let html = "";
 
     board.forEach((line, y) => {
-      html += `<div class='line line-${y % 2 == 0 ? 'even' : 'odd'}'>`;
+      html += `<div class='line line-${y % 2 == 0 ? "even" : "odd"}'>`;
       line.forEach((cell, x) => {
         html += this.makeCellElement(cell, x, y);
-      })
+      });
       html += "</div>";
-    })
+    });
 
     return html;
   }
@@ -116,7 +118,7 @@ export class View {
       html += `<div class='piece'><img src="images/${piece.color}-${piece.type}.png" alt="" srcset=""></div>`;
     }
 
-    html += `</div>`;
+    html += "</div>";
 
     return html;
   }
