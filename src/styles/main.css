@@ -1,10 +1,31 @@
 * {
     box-sizing: border-box;
+    font-family: "montserrat";
+}
+
+header {
+    display: flex;
+    justify-content: center;
+}
+
+header h1 {
+    text-align: center;
+    color: #d79800;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .board {
     display: flex;
     flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background-color: #886100;
 }
 
 .line {
@@ -13,17 +34,10 @@
 }
 
 .cell {
-    width: 100px;
-    height: 100px;
+    width: 10vh;
+    height: 10vh;
     cursor: grab;
-}
-
-.cell.selected {
-  border: 4px solid blue;
-}
-
-.cell.highlighted {
-  border: 4px solid red;
+    position: relative;
 }
 
 .line-odd .cell:nth-child(odd), .line-even .cell:nth-child(even) {
@@ -32,6 +46,25 @@
 
 .line-odd .cell:nth-child(even), .line-even .cell:nth-child(odd) {
     background-color: white;
+}
+
+.cell.highlighted:not(.hasEnemy)::after {
+    content: "";
+    background-color: #d79800;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: calc(50% - 12px);
+    top: calc(50% - 12px);
+    border-radius: 50%;
+}
+
+.cell.highlighted.hasEnemy {
+    background-color: #d79800;
+}
+
+.cell.selected {
+    border: 4px solid #d79800;
 }
 
 .piece {
@@ -48,3 +81,20 @@
 }
 
 
+@media (max-width: 600px) {
+    .cell {
+        height: 12vw;
+        width: 12vw;
+    }
+
+    .cell.highlighted:not(.hasEnemy)::after {
+        width: 4vw;
+        height: 4vw;
+        left: calc(50% - 2vw);
+        top: calc(50% - 2vw);
+    }
+
+    header h1 {
+        font-size: 6vw;
+    }
+}
