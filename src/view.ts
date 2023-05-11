@@ -110,6 +110,9 @@ export class View {
 
     if (this.highlightedCoords.some((coord) => coord.equals(new Coord(x, y)))) {
       classes += " highlighted";
+      if (piece != null) {
+        classes += " hasEnemy";
+      }
     }
 
     html += `<div class="${classes}" data-x='${x}' data-y='${y}'>`;
