@@ -1,10 +1,10 @@
-import { Color } from "../../protocols";
+import { Color, Piece, PieceType } from "../../protocols";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
-export class Pawn {
+export class Pawn implements Piece {
 
-  type = "pawn";
+  type: PieceType = "pawn";
 
   color: Color;
 

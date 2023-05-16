@@ -1,13 +1,13 @@
-import { Color } from "../../protocols";
+import { Color, Piece, PieceType } from "../../protocols";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
-export class Bishop {
+export class Bishop implements Piece {
   color: Color;
 
   moveCount = 0;
 
-  type = "bishop";
+  type: PieceType = "bishop";
 
   constructor(color: Color) {
     this.color = color;
