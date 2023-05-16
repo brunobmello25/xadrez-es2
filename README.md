@@ -1,5 +1,7 @@
 # Xadrez Engenharia de Software II
 
+[Veja o projeto rodando](https://xadrez-es2.vercel.app/)
+
 ## Como rodar o projeto
 
 - primeiramente, ter o [Node.js](https://nodejs.org) instalado
@@ -10,3 +12,4 @@
 
 - [Node.js](https://nodejs.org) - Ambiente de execução Javascript server-side
 - [Vite](https://vitejs.dev) - Ferramental para transpilação e empacotamento do código
+
