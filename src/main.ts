@@ -1,12 +1,10 @@
 import "./styles";
-
-import { Board } from "./models/board";
-import { View } from "./view";
+import {GameController} from "./gamecontroller";
 
 function main() {
-  const board = new Board();
-  const view = new View(board);
-  view.updateBoard();
+  const gameController = new GameController();
+
+  gameController.start();
 }
 
 main();
