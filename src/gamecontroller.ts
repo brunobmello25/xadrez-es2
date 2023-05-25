@@ -1,6 +1,7 @@
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { View } from "./view";
+import { View } from "./boardview";
+import { Options } from "./models/options";
 
 export class GameController {
   private readonly board: Board;
@@ -8,10 +9,12 @@ export class GameController {
 
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
+  private options: Options;
 
-  constructor() {
+  constructor(options: Options) {
     this.board = new Board();
     this.view = new View(this.board, this.handleCellClick.bind(this));
+    this.options = options;
   }
 
   public start(): void {
