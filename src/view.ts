@@ -3,18 +3,26 @@ import { Coord } from "./models/coord";
 import { Matrix, ViewPiece } from "./protocols";
 
 export class View {
-  board: Board;
+  private selectedCoord: Coord | null = null;
+  private highlightedCoords: Coord[] = [];
 
-  selectedCoord: Coord | null;
-
-  highlightedCoords: Coord[] = [];
-
-  constructor(board: Board) {
-    this.board = board;
-    this.selectedCoord = null;
+  constructor(private readonly board: Board, private readonly clickHandler: (coord: Coord) => void) {
   }
 
   updateBoard() {
+    this.renderBoard(this.board);
+    this.bindCellClick(this.clickHandler);
+  }
+
+  setHighlightedCells(coords: Coord[]) {
+    this.highlightedCoords = coords;
+  }
+
+  setSelectedCell(coord: Coord | null) {
+    this.selectedCoord = coord;
+  }
+
+  private renderBoard(board: Board) {
     const target = document.querySelector(".board");
 
     if (!target) {
@@ -22,12 +30,10 @@ export class View {
       return;
     }
 
-    target.innerHTML = this.makeInnerBoardElement(this.board.getViewMatrix());
-
-    this.setEventListeners();
+    target.innerHTML = this.makeInnerBoardElement(board.getViewMatrix());
   }
 
-  private setEventListeners() {
+  private bindCellClick(handler: (coord: Coord) => void) {
     const cells = document.querySelectorAll(".cell");
 
     cells.forEach((cell) => {
@@ -37,53 +43,16 @@ export class View {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const x = parseInt(e.currentTarget.dataset.x);
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const y = parseInt(e.currentTarget.dataset.y);
 
-        this.handleCellClick(new Coord(x, y));
+        handler(new Coord(x, y));
 
         this.updateBoard();
       });
     });
-  }
-
-  private handleCellClick(coord: Coord) {
-    if (!this.selectedCoord) {
-      if (this.board.isEmpty(coord)) return;
-
-      if (this.board.isFriendly(coord)) {
-        this.selectedCoord = coord;
-        this.highlightedCoords = this.board.getPieceMoves(coord);
-        return;
-      }
-
-      if (this.board.hasEnemy(coord)) {
-        alert("Não é possível selecionar uma peça inimiga");
-        return;
-      }
-    }
-
-    if (this.selectedCoord) {
-      if (this.selectedCoord.equals(coord)) {
-        this.selectedCoord = null;
-        this.highlightedCoords = [];
-        return;
-      }
-
-      if (this.board.isFriendly(coord)) {
-        this.selectedCoord = coord;
-        this.highlightedCoords = this.board.getPieceMoves(coord);
-        return;
-      }
-
-      if (this.board.canMove(this.selectedCoord, coord)) {
-        this.board.movePiece(this.selectedCoord, coord);
-        this.selectedCoord = null;
-        this.highlightedCoords = [];
-        return;
-      }
-    }
   }
 
   private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
