@@ -24,3 +24,7 @@ export interface Piece extends Movable {
   color: Color;
   type: PieceType;
 }
+
+export interface Engine {
+  playTurn(): void;
+}
