@@ -20,13 +20,7 @@ export interface Movable {
   onMove(): void;
 }
 
-export interface Comparable {
-  isEnemy(piece: Piece): boolean;
-
-  isFriendly(piece: Piece): boolean;
-}
-
-export interface Piece extends Movable, Comparable {
+export interface Piece extends Movable {
   color: Color;
   type: PieceType;
 }
