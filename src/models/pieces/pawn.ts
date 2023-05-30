@@ -20,7 +20,10 @@ export class Pawn extends Piece {
     }
 
     if (this.moveCount == 0) {
-      const doubleForwardCoord = currentCoord.offsetFromCurrent(0, direction * 2);
+      const doubleForwardCoord = currentCoord.offsetFromCurrent(
+        0,
+        direction * 2
+      );
       if (shiftController.isEmpty(doubleForwardCoord)) {
         coords.push(doubleForwardCoord);
       }

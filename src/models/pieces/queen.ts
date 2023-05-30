@@ -10,7 +10,10 @@ export class Queen extends Piece {
     super(color);
   }
 
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
+  getValidMoves(
+    shiftController: ShiftController,
+    currentCoord: Coord
+  ): Coord[] {
     const coords: Coord[] = [];
 
     for (let i = currentCoord.y - 1; i >= 0; i--) {

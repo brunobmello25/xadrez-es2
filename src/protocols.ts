@@ -3,9 +3,9 @@ import { Coord } from "./models/coord";
 export type Matrix<T> = T[][];
 
 export type Movement = {
-  from: Coord,
-  to: Coord
-}
+  from: Coord;
+  to: Coord;
+};
 
 export type Color = "white" | "black";
 

@@ -10,7 +10,10 @@ export class Bishop extends Piece {
     super(color);
   }
 
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
+  getValidMoves(
+    shiftController: ShiftController,
+    currentCoord: Coord
+  ): Coord[] {
     const coords: Coord[] = [];
 
     // up-left

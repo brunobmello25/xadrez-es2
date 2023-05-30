@@ -74,5 +74,4 @@ export class Board {
 
     return board;
   }
-
 }

@@ -28,7 +28,7 @@ export class GameController {
   public async update() {
     this.view.renderBoard(this.board);
 
-    if(this.shiftController.isHumanTurn()) {
+    if (this.shiftController.isHumanTurn()) {
       this.view.bindBoardClickListeners();
     } else {
       await this.engine.playTurn();
@@ -55,7 +55,10 @@ export class GameController {
       this.clearSelection();
     } else if (this.shiftController.hasAlly(coord)) {
       this.selectCoord(coord);
-    } else if (this.selectedCoord && this.shiftController.canMove(this.selectedCoord, coord)) {
+    } else if (
+      this.selectedCoord &&
+      this.shiftController.canMove(this.selectedCoord, coord)
+    ) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
       alert("Movimento inválido");
@@ -79,7 +82,7 @@ export class GameController {
     this.selectedCoord = coord;
     const piece = this.board.getFromCoord(coord);
 
-    if(piece) {
+    if (piece) {
       this.possibleMoves = this.shiftController.getPieceMoves(coord, piece);
     }
   }

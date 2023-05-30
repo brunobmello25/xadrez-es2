@@ -10,7 +10,10 @@ export class King extends Piece {
     super(color);
   }
 
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
+  getValidMoves(
+    shiftController: ShiftController,
+    currentCoord: Coord
+  ): Coord[] {
     const potentialMoves = [
       new Coord(currentCoord.x + 1, currentCoord.y + 1),
       new Coord(currentCoord.x + 1, currentCoord.y),
@@ -23,7 +26,10 @@ export class King extends Piece {
     ];
 
     return potentialMoves.filter((coord) => {
-      return !coord.isOffBoard() && (shiftController.isEmpty(coord) || shiftController.hasOpponent(coord));
+      return (
+        !coord.isOffBoard() &&
+        (shiftController.isEmpty(coord) || shiftController.hasOpponent(coord))
+      );
     });
   }
 }

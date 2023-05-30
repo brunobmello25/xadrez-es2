@@ -14,7 +14,10 @@ export abstract class Piece {
     this.color = color;
   }
 
-  abstract getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[];
+  abstract getValidMoves(
+    shiftController: ShiftController,
+    currentCoord: Coord
+  ): Coord[];
 
   onMove() {
     this.moveCount += 1;

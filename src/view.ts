@@ -6,8 +6,7 @@ export class View {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
-  constructor(private readonly clickHandler: (coord: Coord) => void) {
-  }
+  constructor(private readonly clickHandler: (coord: Coord) => void) {}
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
