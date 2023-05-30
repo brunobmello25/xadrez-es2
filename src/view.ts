@@ -6,12 +6,7 @@ export class View {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
-  constructor(private readonly board: Board, private readonly clickHandler: (coord: Coord) => void) {
-  }
-
-  updateBoard() {
-    this.renderBoard(this.board);
-    this.bindCellClick(this.clickHandler);
+  constructor(private readonly clickHandler: (coord: Coord) => void) {
   }
 
   setHighlightedCells(coords: Coord[]) {
@@ -22,7 +17,7 @@ export class View {
     this.selectedCoord = coord;
   }
 
-  private renderBoard(board: Board) {
+  renderBoard(board: Board) {
     const target = document.querySelector(".board");
 
     if (!target) {
@@ -33,7 +28,8 @@ export class View {
     target.innerHTML = this.makeInnerBoardElement(board.getViewMatrix());
   }
 
-  private bindCellClick(handler: (coord: Coord) => void) {
+  // TODO: rename this
+  bindCellClick() {
     const cells = document.querySelectorAll(".cell");
 
     cells.forEach((cell) => {
@@ -48,9 +44,7 @@ export class View {
         // @ts-ignore
         const y = parseInt(e.currentTarget.dataset.y);
 
-        handler(new Coord(x, y));
-
-        this.updateBoard();
+        this.clickHandler(new Coord(x, y));
       });
     });
   }
