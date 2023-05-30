@@ -11,6 +11,30 @@ export class Board {
     this.boardMatrix = this.makeInitialBoard();
   }
 
+  isCheck(kingColor: Color) {
+    const kingCoord = this.findKing(kingColor);
+
+    if (!kingCoord) throw new Error("No king found");
+
+    for (let x = 0; x < BOARD_DIMENSIONS.width; x++) {
+      for (let y = 0; y < BOARD_DIMENSIONS.height; y++) {
+        const coord = new Coord(x, y);
+
+        const piece = this.getFromCoord(coord);
+
+        if (!piece || piece.color === kingColor) continue;
+
+        const validMoves = piece.getValidMoves(this, coord);
+
+        if (validMoves.some((move) => move.equals(kingCoord))) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   movePiece(from: Coord, to: Coord) {
     const piece = this.getFromCoord(from);
 
@@ -96,5 +120,21 @@ export class Board {
     }
 
     return board;
+  }
+
+  private findKing(color: Color): Coord | null {
+    for (let y = 0; y < 8; y++) {
+      const line = this.boardMatrix[y];
+
+      for (let x = 0; x < 8; x++) {
+        const piece = line[x];
+
+        if (piece && piece.type === "king" && piece.color === color) {
+          return new Coord(x, y);
+        }
+      }
+    }
+
+    return null;
   }
 }

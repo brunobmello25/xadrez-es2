@@ -1,8 +1,7 @@
-import { BOARD_DIMENSIONS } from "./constants";
 import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Color, Engine } from "./protocols";
+import { Engine } from "./protocols";
 import { ShiftController } from "./shiftcontroller";
 import { View } from "./view";
 
