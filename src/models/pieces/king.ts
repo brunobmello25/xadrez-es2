@@ -2,7 +2,7 @@ import { Color, Piece, PieceType } from "../../protocols";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
-export class King implements Piece{
+export class King implements Piece {
   moveCount = 0;
 
   color: Color;
@@ -30,7 +30,9 @@ export class King implements Piece{
     ];
 
     return potentialMoves.filter((coord) => {
-      return !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord));
+      return (
+        !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord))
+      );
     });
   }
 }

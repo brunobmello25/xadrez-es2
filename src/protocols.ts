@@ -5,12 +5,18 @@ export type Matrix<T> = T[][];
 
 export type Color = "white" | "black";
 
-export type PieceType = "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
+export type PieceType =
+  | "pawn"
+  | "rook"
+  | "knight"
+  | "bishop"
+  | "queen"
+  | "king";
 
 export type ViewPiece = {
   color: Color;
   type: PieceType;
-}
+};
 
 export interface Movable {
   moveCount: number;

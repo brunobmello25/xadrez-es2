@@ -2,9 +2,7 @@ import { Color, Matrix, Piece, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
 
-
 export class Board {
-
   private boardMatrix: Matrix<Piece | null>;
 
   private currentShift: Color = "white";
@@ -70,14 +68,16 @@ export class Board {
 
         return {
           type: piece.type as PieceType,
-          color: piece.color
+          color: piece.color,
         };
       });
     });
   }
 
   private makeInitialBoard(): Matrix<Piece | null> {
-    const board = Array(8).fill([]).map(() => Array(8).fill(null));
+    const board = Array(8)
+      .fill([])
+      .map(() => Array(8).fill(null));
 
     board[0][0] = new Rook("black");
     board[0][1] = new Knight("black");
