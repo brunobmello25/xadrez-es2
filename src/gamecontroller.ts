@@ -1,7 +1,7 @@
 import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Engine } from "./protocols";
+import { Color, Engine } from "./protocols";
 import { ShiftController } from "./shiftcontroller";
 import { View } from "./view";
 
@@ -14,6 +14,10 @@ export class GameController {
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
 
+  private checkMate = false;
+  private staleMate = false;
+  private winner: Color | null = null;
+
   constructor() {
     this.board = new Board();
     this.shiftController = new ShiftController(this.board);
@@ -25,7 +29,27 @@ export class GameController {
     await this.update();
   }
 
+  public async restart(): Promise<void> {
+    this.checkMate = false;
+    this.staleMate = false;
+    this.winner = null;
+    this.board.reset();
+    this.shiftController.reset();
+    this.clearSelection();
+    this.update();
+  }
+
   public async update() {
+    if (this.checkMate) {
+      this.view.renderCheckMate(this.winner);
+      this.restart();
+      return;
+    } else if (this.staleMate) {
+      this.view.renderStaleMate();
+      this.restart();
+      return;
+    }
+
     this.view.renderBoard(this.board);
 
     if (this.shiftController.isHumanTurn()) {
@@ -33,6 +57,8 @@ export class GameController {
     } else {
       await this.engine.playTurn();
       this.shiftController.updateShift();
+      this.checkCheckMate();
+      this.checkStaleMate();
       this.update();
     }
   }
@@ -61,7 +87,7 @@ export class GameController {
     ) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
-      alert("Movimento inválido");
+      this.clearSelection();
     }
   }
 
@@ -83,7 +109,7 @@ export class GameController {
   private selectCoord(coord: Coord) {
     this.selectedCoord = coord;
 
-    this.possibleMoves = this.shiftController.getPieceMoves(coord);
+    this.possibleMoves = this.board.getValidMoves(coord);
   }
 
   private moveSelectedPiece(from: Coord, to: Coord) {
@@ -91,5 +117,23 @@ export class GameController {
     this.board.movePiece(from, to);
     this.clearSelection();
     this.shiftController.updateShift();
+    this.checkCheckMate();
+    this.checkStaleMate();
+  }
+
+  private checkStaleMate() {
+    if (this.board.isStaleMate(this.shiftController.currentShift())) {
+      this.staleMate = true;
+    }
+  }
+
+  private checkCheckMate() {
+    if (this.board.isCheckMate("black")) {
+      this.checkMate = true;
+      this.winner = "white";
+    } else if (this.board.isCheckMate("white")) {
+      this.checkMate = true;
+      this.winner = "black";
+    }
   }
 }

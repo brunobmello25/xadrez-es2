@@ -11,6 +11,10 @@ export class Board {
     this.boardMatrix = this.makeInitialBoard();
   }
 
+  reset() {
+    this.boardMatrix = this.makeInitialBoard();
+  }
+
   isCheckMate(kingColor: Color) {
     if (!this.isCheck(kingColor)) return false;
 
@@ -26,10 +30,10 @@ export class Board {
 
         if (!piece || piece.color !== kingColor) continue;
 
-        const validMoves = piece.getPossibleMoves(this, coord);
+        const possibleMoves = piece.getPossibleMoves(this, coord);
 
         if (
-          validMoves.some((move) =>
+          possibleMoves.some((move) =>
             this.moveWillRemoveKingFromCheck(kingColor, coord, move)
           )
         ) {
@@ -54,15 +58,35 @@ export class Board {
 
         if (!piece || piece.color === kingColor) continue;
 
-        const validMoves = piece.getPossibleMoves(this, coord);
+        const possibleMoves = piece.getPossibleMoves(this, coord);
 
-        if (validMoves.some((move) => move.equals(kingCoord))) {
+        if (possibleMoves.some((move) => move.equals(kingCoord))) {
           return true;
         }
       }
     }
 
     return false;
+  }
+
+  isStaleMate(kingColor: Color) {
+    if (this.isCheck(kingColor)) return false;
+    if (this.isCheckMate(kingColor)) return false;
+
+    for (let x = 0; x < BOARD_DIMENSIONS.width; x++) {
+      for (let y = 0; y < BOARD_DIMENSIONS.height; y++) {
+        const coord = new Coord(x, y);
+
+        const piece = this.getFromCoord(coord);
+
+        if (!piece || piece.color !== kingColor) continue;
+
+        if (this.getValidMoves(coord).length > 0) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   moveWillPutKingInCheck(kingColor: Color, from: Coord, to: Coord) {

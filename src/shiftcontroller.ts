@@ -7,7 +7,7 @@ export class ShiftController {
   private shift: Color = "white";
 
   private whiteType: PlayerType = "human";
-  private blackType: PlayerType = "computer";
+  private blackType: PlayerType = "human";
 
   constructor(private readonly board: Board) {}
 
@@ -17,10 +17,6 @@ export class ShiftController {
 
   updateShift() {
     this.shift = this.shift === "white" ? "black" : "white";
-  }
-
-  getPieceMoves(coord: Coord) {
-    return this.board.getValidMoves(coord);
   }
 
   canMove(from: Coord, to: Coord) {
@@ -44,5 +40,9 @@ export class ShiftController {
       (this.shift === "white" && playerIsComputer(this.whiteType)) ||
       (this.shift === "black" && playerIsComputer(this.blackType))
     );
+  }
+
+  reset() {
+    this.shift = "white";
   }
 }
