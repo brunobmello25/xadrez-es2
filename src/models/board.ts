@@ -1,4 +1,4 @@
-import { Color, Matrix, Piece, PieceType, ViewPiece } from "../protocols";
+import { Color, Matrix, Piece, PieceType, PlayerType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
 
@@ -8,6 +8,9 @@ export class Board {
   private boardMatrix: Matrix<Piece | null>;
 
   private currentShift: Color = "white";
+
+  private whiteType: PlayerType = "human";
+  private blackType: PlayerType = "computer";
 
   constructor() {
     this.boardMatrix = this.makeInitialBoard();

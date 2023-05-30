@@ -7,6 +7,8 @@ export type Color = "white" | "black";
 
 export type PieceType = "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
 
+export type PlayerType = "human" | "computer";
+
 export type ViewPiece = {
   color: Color;
   type: PieceType;
