@@ -1,7 +1,6 @@
-import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Color, PlayerType } from "./protocols";
+import { ShiftController } from "./shiftcontroller";
 import { View } from "./view";
 
 export class GameController {
@@ -11,13 +10,11 @@ export class GameController {
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
 
-  private currentShift: Color = "white";
-
-  private whiteType: PlayerType = "human";
-  private blackType: PlayerType = "computer";
+  private readonly shiftController: ShiftController;
 
   constructor() {
     this.board = new Board();
+    this.shiftController = new ShiftController(this.board);
     this.view = new View(this.handleCellClick.bind(this));
   }
 
@@ -28,16 +25,17 @@ export class GameController {
   public update() {
     this.view.renderBoard(this.board);
 
-    if(this.isHumanTurn()) {
+    if(this.shiftController.isHumanTurn()) {
       this.view.bindCellClick();
     } else {
       // TODO: here
+      alert("AI will play now");
     }
   }
 
   private handleCellClick(coord: Coord) {
     // TODO: shouldn't need this here
-    if (this.isAiTurn()) return;
+    if (this.shiftController.isAiTurn()) return;
 
     if (this.selectedCoord) {
       this.handleCellClickWhenSelected(coord);
@@ -54,9 +52,9 @@ export class GameController {
   private handleCellClickWhenSelected(coord: Coord) {
     if (this.selectedCoord?.equals(coord)) {
       this.clearSelection();
-    } else if (this.board.isFriendly(coord, this.currentShift)) {
+    } else if (this.shiftController.hasAlly(coord)) {
       this.selectCoord(coord);
-    } else if (this.selectedCoord && this.board.canMove(this.selectedCoord, coord)) {
+    } else if (this.selectedCoord && this.shiftController.canMove(this.selectedCoord, coord)) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
       alert("Movimento inválido");
@@ -64,9 +62,9 @@ export class GameController {
   }
 
   private handleCellClickWhenNotSelected(coord: Coord) {
-    if (this.board.isFriendly(coord, this.currentShift)) {
+    if (this.shiftController.hasAlly(coord)) {
       this.selectCoord(coord);
-    } else if (this.board.hasEnemy(coord,this.currentShift)) {
+    } else if (this.shiftController.hasOpponent(coord)) {
       alert("Não é possível selecionar uma peça inimiga");
     }
   }
@@ -78,25 +76,16 @@ export class GameController {
 
   private selectCoord(coord: Coord) {
     this.selectedCoord = coord;
-    this.possibleMoves = this.board.getPieceMoves(coord);
+    const piece = this.board.getFromCoord(coord);
+
+    if(piece) {
+      this.possibleMoves = this.shiftController.getPieceMoves(coord, piece);
+    }
   }
 
   private moveSelectedPiece(from: Coord, to: Coord) {
     this.board.movePiece(from, to);
     this.clearSelection();
-  }
-
-  private isHumanTurn() {
-    return (
-      (this.currentShift === "white" && playerIsHuman(this.whiteType)) ||
-      (this.currentShift === "black" && playerIsHuman(this.blackType))
-    );
-  }
-
-  private isAiTurn() {
-    return (
-      (this.currentShift === "white" && playerIsComputer(this.whiteType)) ||
-      (this.currentShift === "black" && playerIsComputer(this.blackType))
-    );
+    this.shiftController.updateShift();
   }
 }
