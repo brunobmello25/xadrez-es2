@@ -1,7 +1,8 @@
 import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Color, Piece, PlayerType } from "./protocols";
+import { Piece } from "./models/pieces";
+import { Color, PlayerType } from "./protocols";
 
 export class ShiftController {
   private shift: Color = "white";

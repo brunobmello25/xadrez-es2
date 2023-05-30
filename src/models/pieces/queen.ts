@@ -1,20 +1,13 @@
-import { Color, Piece, PieceType } from "../../protocols";
+import { Color, PieceType } from "../../protocols";
 import { ShiftController } from "../../shiftcontroller";
 import { Coord } from "../coord";
+import { Piece } from "./piece";
 
-export class Queen implements Piece {
-  moveCount = 0;
-
-  color: Color;
-
+export class Queen extends Piece {
   type: PieceType = "queen";
 
   constructor(color: Color) {
-    this.color = color;
-  }
-
-  onMove() {
-    this.moveCount += 1;
+    super(color);
   }
 
   getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {

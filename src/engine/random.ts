@@ -1,8 +1,9 @@
 import { Board } from "../models/board";
 import { Coord } from "../models/coord";
-import { Engine, Movement, Piece } from "../protocols";
+import { Engine, Movement } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../shiftcontroller";
+import { Piece } from "../models/pieces";
 
 export class RandomEngine implements Engine {
   constructor(private readonly board: Board, private readonly shiftController: ShiftController) {

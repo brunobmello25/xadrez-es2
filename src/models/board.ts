@@ -1,6 +1,7 @@
-import { Matrix, Piece, PieceType, ViewPiece } from "../protocols";
+import { Matrix, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
+import { Piece } from "./pieces";
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;

@@ -1,17 +1,13 @@
-import { Color, Piece, PieceType } from "../../protocols";
+import { Color, PieceType } from "../../protocols";
 import { ShiftController } from "../../shiftcontroller";
 import { Coord } from "../coord";
+import { Piece } from "./piece";
 
-export class Pawn implements Piece {
-
+export class Pawn extends Piece {
   type: PieceType = "pawn";
 
-  color: Color;
-
-  moveCount = 0;
-
   constructor(color: Color) {
-    this.color = color;
+    super(color);
   }
 
   getValidMoves(shiftController: ShiftController, currentCoord: Coord) {
@@ -41,9 +37,5 @@ export class Pawn implements Piece {
     }
 
     return coords;
-  }
-
-  onMove() {
-    this.moveCount += 1;
   }
 }
