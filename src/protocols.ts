@@ -1,7 +1,12 @@
-import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { ShiftController } from "./shiftcontroller";
 
 export type Matrix<T> = T[][];
+
+export type Movement = {
+  from: Coord,
+  to: Coord
+}
 
 export type Color = "white" | "black";
 
@@ -13,6 +18,8 @@ export type PieceType =
   | "queen"
   | "king";
 
+export type PlayerType = "human" | "computer";
+
 export type ViewPiece = {
   color: Color;
   type: PieceType;
@@ -21,7 +28,7 @@ export type ViewPiece = {
 export interface Movable {
   moveCount: number;
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[];
+  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[];
 
   onMove(): void;
 }
@@ -29,4 +36,8 @@ export interface Movable {
 export interface Piece extends Movable {
   color: Color;
   type: PieceType;
+}
+
+export interface Engine {
+  playTurn(): Promise<void>;
 }
