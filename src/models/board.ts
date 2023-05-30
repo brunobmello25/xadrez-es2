@@ -1,10 +1,10 @@
 import { Color, Matrix, Piece, PieceType, PlayerType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
+import { playerIsComputer } from "../helpers";
 
 
 export class Board {
-
   private boardMatrix: Matrix<Piece | null>;
 
   private currentShift: Color = "white";
@@ -113,5 +113,12 @@ export class Board {
 
   private updateShift() {
     this.currentShift = this.currentShift === "white" ? "black" : "white";
+  }
+
+  public isAiTurn() {
+    return (
+      (this.currentShift === "white" && playerIsComputer(this.whiteType)) ||
+      (this.currentShift === "black" && playerIsComputer(this.blackType))
+    );
   }
 }
