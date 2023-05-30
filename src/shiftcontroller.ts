@@ -7,7 +7,7 @@ export class ShiftController {
   private shift: Color = "white";
 
   private whiteType: PlayerType = "human";
-  private blackType: PlayerType = "human";
+  private blackType: PlayerType = "computer";
 
   constructor(private readonly board: Board) {}
 

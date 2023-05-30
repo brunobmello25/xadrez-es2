@@ -33,5 +33,5 @@ export interface Piece extends Movable {
 }
 
 export interface Engine {
-  playTurn(): void;
+  playTurn(): Promise<void>;
 }

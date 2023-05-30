@@ -8,9 +8,13 @@ export class RandomEngine implements Engine {
   constructor(private readonly board: Board, private readonly shiftController: ShiftController) {
   }
 
-  playTurn(): void {
+  async playTurn(): Promise<void> {
     const possibleMoves = this.getAllPossibleMoves();
+
     const movement: Movement = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
     this.board.movePiece(movement.from, movement.to);
   }
 
