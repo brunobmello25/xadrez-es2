@@ -3,7 +3,6 @@ import { ShiftController } from "../../shiftcontroller";
 import { Coord } from "../coord";
 
 export class Pawn implements Piece {
-
   type: PieceType = "pawn";
 
   color: Color;

@@ -2,7 +2,7 @@ import { Color, Piece, PieceType } from "../../protocols";
 import { ShiftController } from "../../shiftcontroller";
 import { Coord } from "../coord";
 
-export class King implements Piece{
+export class King implements Piece {
   moveCount = 0;
 
   color: Color;

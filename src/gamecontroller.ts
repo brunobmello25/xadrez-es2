@@ -43,7 +43,7 @@ export class GameController {
     } else {
       this.handleCellClickWhenNotSelected(coord);
     }
-  
+
     this.view.setHighlightedCells(this.possibleMoves);
     this.view.setSelectedCell(this.selectedCoord);
 
