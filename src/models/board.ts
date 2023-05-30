@@ -1,16 +1,9 @@
-import { Color, Matrix, Piece, PieceType, PlayerType, ViewPiece } from "../protocols";
+import { Color, Matrix, Piece, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
-import { playerIsComputer } from "../helpers";
-
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
-
-  private currentShift: Color = "white";
-
-  private whiteType: PlayerType = "human";
-  private blackType: PlayerType = "computer";
 
   constructor() {
     this.boardMatrix = this.makeInitialBoard();
@@ -34,20 +27,19 @@ export class Board {
     this.setInCoord(from, null);
     this.setInCoord(to, piece);
     piece.onMove();
-    this.updateShift();
   }
 
   isEmpty(coord: Coord) {
     return this.boardMatrix[coord.y][coord.x] == null;
   }
 
-  isFriendly(coord: Coord) {
-    return this.boardMatrix[coord.y][coord.x]?.color === this.currentShift;
+  isFriendly(coord: Coord, currentShift: Color) {
+    return this.boardMatrix[coord.y][coord.x]?.color === currentShift;
   }
 
-  hasEnemy(coord: Coord) {
+  hasEnemy(coord: Coord, currentShift: Color) {
     if (this.isEmpty(coord)) return false;
-    return this.boardMatrix[coord.y][coord.x]?.color !== this.currentShift;
+    return this.boardMatrix[coord.y][coord.x]?.color !== currentShift;
   }
 
   getFromCoord(coord: Coord) {
@@ -111,14 +103,4 @@ export class Board {
     return board;
   }
 
-  private updateShift() {
-    this.currentShift = this.currentShift === "white" ? "black" : "white";
-  }
-
-  public isAiTurn() {
-    return (
-      (this.currentShift === "white" && playerIsComputer(this.whiteType)) ||
-      (this.currentShift === "black" && playerIsComputer(this.blackType))
-    );
-  }
 }
