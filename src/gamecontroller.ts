@@ -29,7 +29,7 @@ export class GameController {
     this.view.renderBoard(this.board);
 
     if(this.shiftController.isHumanTurn()) {
-      this.view.bindCellClick();
+      this.view.bindBoardClickListeners();
     } else {
       await this.engine.playTurn();
       this.shiftController.updateShift();
@@ -38,9 +38,6 @@ export class GameController {
   }
 
   private handleCellClick(coord: Coord) {
-    // TODO: shouldn't need this here
-    if (this.shiftController.isAiTurn()) return;
-
     if (this.selectedCoord) {
       this.handleCellClickWhenSelected(coord);
     } else {
