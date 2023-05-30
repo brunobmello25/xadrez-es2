@@ -11,14 +11,20 @@ export class GameController {
 
   constructor() {
     this.board = new Board();
-    this.view = new View(this.board, this.handleCellClick.bind(this));
+    this.view = new View(this.handleCellClick.bind(this));
   }
 
   public start(): void {
-    this.view.updateBoard();
+    this.updateView();
+  }
+
+  public updateView(): void {
+    this.view.renderBoard(this.board);
+    this.view.bindCellClick();
   }
 
   private handleCellClick(coord: Coord) {
+    // TODO: shouldn't need this here
     if (this.board.isAiTurn()) return;
 
     if (this.selectedCoord) {
@@ -29,6 +35,8 @@ export class GameController {
   
     this.view.setHighlightedCells(this.possibleMoves);
     this.view.setSelectedCell(this.selectedCoord);
+
+    this.updateView();
   }
 
   private handleCellClickWhenSelected(coord: Coord) {
