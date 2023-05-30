@@ -1,4 +1,4 @@
-import { Color, Matrix, Piece, PieceType, ViewPiece } from "../protocols";
+import { Matrix, Piece, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
 
@@ -7,16 +7,6 @@ export class Board {
 
   constructor() {
     this.boardMatrix = this.makeInitialBoard();
-  }
-
-  canMove(from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
-
-    if (!piece) throw new Error("No piece to move");
-
-    const moves = piece.getValidMoves(this, from);
-
-    return moves.some((coord) => coord.equals(to));
   }
 
   movePiece(from: Coord, to: Coord) {
@@ -29,33 +19,12 @@ export class Board {
     piece.onMove();
   }
 
-  isEmpty(coord: Coord) {
-    return this.boardMatrix[coord.y][coord.x] == null;
-  }
-
-  isFriendly(coord: Coord, currentShift: Color) {
-    return this.boardMatrix[coord.y][coord.x]?.color === currentShift;
-  }
-
-  hasEnemy(coord: Coord, currentShift: Color) {
-    if (this.isEmpty(coord)) return false;
-    return this.boardMatrix[coord.y][coord.x]?.color !== currentShift;
-  }
-
   getFromCoord(coord: Coord) {
     return this.boardMatrix[coord.y][coord.x];
   }
 
   setInCoord(coord: Coord, piece: Piece | null) {
     this.boardMatrix[coord.y][coord.x] = piece;
-  }
-
-  getPieceMoves(pieceCoord: Coord) {
-    const piece = this.getFromCoord(pieceCoord);
-
-    if (!piece) throw new Error("No piece to move");
-
-    return piece.getValidMoves(this, pieceCoord);
   }
 
   getViewMatrix(): Matrix<ViewPiece | null> {

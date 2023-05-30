@@ -1,5 +1,5 @@
-import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { ShiftController } from "./shiftcontroller";
 
 export type Matrix<T> = T[][];
 
@@ -22,7 +22,7 @@ export type ViewPiece = {
 export interface Movable {
   moveCount: number;
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[];
+  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[];
 
   onMove(): void;
 }
@@ -33,5 +33,5 @@ export interface Piece extends Movable {
 }
 
 export interface Engine {
-  playTurn(): void;
+  playTurn(): Promise<void>;
 }

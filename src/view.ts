@@ -28,8 +28,7 @@ export class View {
     target.innerHTML = this.makeInnerBoardElement(board.getViewMatrix());
   }
 
-  // TODO: rename this
-  bindCellClick() {
+  bindBoardClickListeners() {
     const cells = document.querySelectorAll(".cell");
 
     cells.forEach((cell) => {

@@ -2,17 +2,19 @@ import { Board } from "../models/board";
 import { Coord } from "../models/coord";
 import { Engine, Movement, Piece } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
+import { ShiftController } from "../shiftcontroller";
 
 export class RandomEngine implements Engine {
-  private board: Board;
-
-  constructor(board: Board) {
-    this.board = board;
+  constructor(private readonly board: Board, private readonly shiftController: ShiftController) {
   }
 
-  playTurn(): void {
+  async playTurn(): Promise<void> {
     const possibleMoves = this.getAllPossibleMoves();
+
     const movement: Movement = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
     this.board.movePiece(movement.from, movement.to);
   }
 
@@ -23,11 +25,11 @@ export class RandomEngine implements Engine {
       for (let y = 0; y < BOARD_DIMENSIONS.height; y++) {
         const coord = new Coord(x, y);
 
-        if (this.board.isEmpty(coord) || this.board.hasEnemy(coord)) continue;
+        if (this.shiftController.isEmpty(coord) || this.shiftController.hasOpponent(coord)) continue;
 
         const piece = this.board.getFromCoord(coord) as Piece;
 
-        const validPieceMoves = piece.getValidMoves(this.board, coord);
+        const validPieceMoves = piece.getValidMoves(this.shiftController, coord);
 
         validPieceMoves.forEach((to) => {
           possibleMoves.push({

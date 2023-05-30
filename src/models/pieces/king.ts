@@ -1,5 +1,5 @@
 import { Color, Piece, PieceType } from "../../protocols";
-import { Board } from "../board";
+import { ShiftController } from "../../shiftcontroller";
 import { Coord } from "../coord";
 
 export class King implements Piece{
@@ -17,7 +17,7 @@ export class King implements Piece{
     this.moveCount += 1;
   }
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
+  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
     const potentialMoves = [
       new Coord(currentCoord.x + 1, currentCoord.y + 1),
       new Coord(currentCoord.x + 1, currentCoord.y),
@@ -30,7 +30,7 @@ export class King implements Piece{
     ];
 
     return potentialMoves.filter((coord) => {
-      return !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord));
+      return !coord.isOffBoard() && (shiftController.isEmpty(coord) || shiftController.hasOpponent(coord));
     });
   }
 }
