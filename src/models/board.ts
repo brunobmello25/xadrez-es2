@@ -11,6 +11,36 @@ export class Board {
     this.boardMatrix = this.makeInitialBoard();
   }
 
+  isCheckMate(kingColor: Color) {
+    if (!this.isCheck(kingColor)) return false;
+
+    const kingCoord = this.findKing(kingColor);
+
+    if (!kingCoord) throw new Error("No king found");
+
+    for (let x = 0; x < BOARD_DIMENSIONS.width; x++) {
+      for (let y = 0; y < BOARD_DIMENSIONS.height; y++) {
+        const coord = new Coord(x, y);
+
+        const piece = this.getFromCoord(coord);
+
+        if (!piece || piece.color !== kingColor) continue;
+
+        const validMoves = piece.getPossibleMoves(this, coord);
+
+        if (
+          validMoves.some((move) =>
+            this.moveWillRemoveKingFromCheck(kingColor, coord, move)
+          )
+        ) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   isCheck(kingColor: Color) {
     const kingCoord = this.findKing(kingColor);
 
