@@ -1,5 +1,7 @@
+import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { Color, PlayerType } from "./protocols";
 import { View } from "./view";
 
 export class GameController {
@@ -9,23 +11,33 @@ export class GameController {
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
 
+  private currentShift: Color = "white";
+
+  private whiteType: PlayerType = "human";
+  private blackType: PlayerType = "computer";
+
   constructor() {
     this.board = new Board();
     this.view = new View(this.handleCellClick.bind(this));
   }
 
   public start(): void {
-    this.updateView();
+    this.update();
   }
 
-  public updateView(): void {
+  public update() {
     this.view.renderBoard(this.board);
-    this.view.bindCellClick();
+
+    if(this.isHumanTurn()) {
+      this.view.bindCellClick();
+    } else {
+      // TODO: here
+    }
   }
 
   private handleCellClick(coord: Coord) {
     // TODO: shouldn't need this here
-    if (this.board.isAiTurn()) return;
+    if (this.isAiTurn()) return;
 
     if (this.selectedCoord) {
       this.handleCellClickWhenSelected(coord);
@@ -36,13 +48,13 @@ export class GameController {
     this.view.setHighlightedCells(this.possibleMoves);
     this.view.setSelectedCell(this.selectedCoord);
 
-    this.updateView();
+    this.update();
   }
 
   private handleCellClickWhenSelected(coord: Coord) {
     if (this.selectedCoord?.equals(coord)) {
       this.clearSelection();
-    } else if (this.board.isFriendly(coord)) {
+    } else if (this.board.isFriendly(coord, this.currentShift)) {
       this.selectCoord(coord);
     } else if (this.selectedCoord && this.board.canMove(this.selectedCoord, coord)) {
       this.moveSelectedPiece(this.selectedCoord, coord);
@@ -52,9 +64,9 @@ export class GameController {
   }
 
   private handleCellClickWhenNotSelected(coord: Coord) {
-    if (this.board.isFriendly(coord)) {
+    if (this.board.isFriendly(coord, this.currentShift)) {
       this.selectCoord(coord);
-    } else if (this.board.hasEnemy(coord)) {
+    } else if (this.board.hasEnemy(coord,this.currentShift)) {
       alert("Não é possível selecionar uma peça inimiga");
     }
   }
@@ -72,5 +84,19 @@ export class GameController {
   private moveSelectedPiece(from: Coord, to: Coord) {
     this.board.movePiece(from, to);
     this.clearSelection();
+  }
+
+  private isHumanTurn() {
+    return (
+      (this.currentShift === "white" && playerIsHuman(this.whiteType)) ||
+      (this.currentShift === "black" && playerIsHuman(this.blackType))
+    );
+  }
+
+  private isAiTurn() {
+    return (
+      (this.currentShift === "white" && playerIsComputer(this.whiteType)) ||
+      (this.currentShift === "black" && playerIsComputer(this.blackType))
+    );
   }
 }
