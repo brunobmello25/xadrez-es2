@@ -1,7 +1,8 @@
+import { BOARD_DIMENSIONS } from "./constants";
 import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Engine } from "./protocols";
+import { Color, Engine } from "./protocols";
 import { ShiftController } from "./shiftcontroller";
 import { View } from "./view";
 
@@ -53,7 +54,7 @@ export class GameController {
   private handleCellClickWhenSelected(coord: Coord) {
     if (this.selectedCoord?.equals(coord)) {
       this.clearSelection();
-    } else if (this.shiftController.hasAlly(coord)) {
+    } else if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
       this.selectCoord(coord);
     } else if (
       this.selectedCoord &&
@@ -66,9 +67,11 @@ export class GameController {
   }
 
   private handleCellClickWhenNotSelected(coord: Coord) {
-    if (this.shiftController.hasAlly(coord)) {
+    if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
       this.selectCoord(coord);
-    } else if (this.shiftController.hasOpponent(coord)) {
+    } else if (
+      this.board.hasOpponent(coord, this.shiftController.currentShift())
+    ) {
       alert("Não é possível selecionar uma peça inimiga");
     }
   }

@@ -30,17 +30,14 @@ export class RandomEngine implements Engine {
         const coord = new Coord(x, y);
 
         if (
-          this.shiftController.isEmpty(coord) ||
-          this.shiftController.hasOpponent(coord)
+          this.board.isEmpty(coord) ||
+          this.board.hasOpponent(coord, this.shiftController.currentShift())
         )
           continue;
 
         const piece = this.board.getFromCoord(coord) as Piece;
 
-        const validPieceMoves = piece.getValidMoves(
-          this.shiftController,
-          coord
-        );
+        const validPieceMoves = piece.getValidMoves(this.board, coord);
 
         validPieceMoves.forEach((to) => {
           possibleMoves.push({

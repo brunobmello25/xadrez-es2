@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
 
@@ -10,12 +10,12 @@ export class Pawn extends Piece {
     super(color);
   }
 
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord) {
+  getValidMoves(board: Board, currentCoord: Coord) {
     const coords = [];
     const direction = this.color == "white" ? -1 : 1;
 
     const forwardCoord = currentCoord.offsetFromCurrent(0, direction);
-    if (shiftController.isEmpty(forwardCoord)) {
+    if (board.isEmpty(forwardCoord)) {
       coords.push(forwardCoord);
     }
 
@@ -24,18 +24,18 @@ export class Pawn extends Piece {
         0,
         direction * 2
       );
-      if (shiftController.isEmpty(doubleForwardCoord)) {
+      if (board.isEmpty(doubleForwardCoord)) {
         coords.push(doubleForwardCoord);
       }
     }
 
     const leftDiagonalCoord = currentCoord.offsetFromCurrent(-1, direction);
-    if (shiftController.hasOpponent(leftDiagonalCoord)) {
+    if (board.hasOpponent(leftDiagonalCoord, this.color)) {
       coords.push(leftDiagonalCoord);
     }
 
     const rightDiagonalCoord = currentCoord.offsetFromCurrent(1, direction);
-    if (shiftController.hasOpponent(rightDiagonalCoord)) {
+    if (board.hasOpponent(rightDiagonalCoord, this.color)) {
       coords.push(rightDiagonalCoord);
     }
 

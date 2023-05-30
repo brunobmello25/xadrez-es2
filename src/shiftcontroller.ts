@@ -20,24 +20,8 @@ export class ShiftController {
     this.shift = this.shift === "white" ? "black" : "white";
   }
 
-  hasOpponent(coord: Coord) {
-    const piece = this.board.getFromCoord(coord);
-
-    return piece && piece.color !== this.shift;
-  }
-
-  hasAlly(coord: Coord) {
-    const piece = this.board.getFromCoord(coord);
-
-    return piece && piece.color === this.shift;
-  }
-
-  isEmpty(coord: Coord) {
-    return !this.board.getFromCoord(coord);
-  }
-
   getPieceMoves(coord: Coord, piece: Piece) {
-    return piece.getValidMoves(this, coord);
+    return piece.getValidMoves(this.board, coord);
   }
 
   canMove(from: Coord, to: Coord) {
@@ -45,7 +29,7 @@ export class ShiftController {
 
     if (!piece) throw new Error("No piece to move");
 
-    const moves = piece.getValidMoves(this, from);
+    const moves = piece.getValidMoves(this.board, from);
 
     return moves.some((coord) => coord.equals(to));
   }

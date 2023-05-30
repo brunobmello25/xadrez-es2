@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
 
@@ -10,10 +10,7 @@ export class Knight extends Piece {
     super(color);
   }
 
-  getValidMoves(
-    shiftController: ShiftController,
-    currentCoord: Coord
-  ): Coord[] {
+  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
     const potentialMoves: Coord[] = [
       new Coord(currentCoord.x + 1, currentCoord.y + 2),
       new Coord(currentCoord.x + 2, currentCoord.y + 1),
@@ -28,7 +25,7 @@ export class Knight extends Piece {
     return potentialMoves.filter((coord) => {
       return (
         !coord.isOffBoard() &&
-        (shiftController.isEmpty(coord) || shiftController.hasOpponent(coord))
+        (board.isEmpty(coord) || board.hasOpponent(coord, this.color))
       );
     });
   }

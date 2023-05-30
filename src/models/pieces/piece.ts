@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Board } from "../board";
 import { Coord } from "../coord";
 
 export abstract class Piece {
@@ -14,10 +14,7 @@ export abstract class Piece {
     this.color = color;
   }
 
-  abstract getValidMoves(
-    shiftController: ShiftController,
-    currentCoord: Coord
-  ): Coord[];
+  abstract getValidMoves(board: Board, currentCoord: Coord): Coord[];
 
   onMove() {
     this.moveCount += 1;

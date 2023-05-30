@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
 
@@ -10,10 +10,7 @@ export class Bishop extends Piece {
     super(color);
   }
 
-  getValidMoves(
-    shiftController: ShiftController,
-    currentCoord: Coord
-  ): Coord[] {
+  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
     const coords: Coord[] = [];
 
     // up-left
@@ -23,9 +20,9 @@ export class Bishop extends Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -41,9 +38,9 @@ export class Bishop extends Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -59,9 +56,9 @@ export class Bishop extends Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -77,9 +74,9 @@ export class Bishop extends Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {

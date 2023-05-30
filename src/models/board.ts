@@ -1,7 +1,8 @@
-import { Matrix, PieceType, ViewPiece } from "../protocols";
+import { Color, Matrix, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
 import { Piece } from "./pieces";
+import { BOARD_DIMENSIONS } from "../constants";
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
@@ -39,6 +40,28 @@ export class Board {
         };
       });
     });
+  }
+
+  hasOpponent(coord: Coord, color: Color): boolean {
+    const piece = this.getFromCoord(coord);
+
+    if (!piece) return false;
+
+    return piece.color !== color;
+  }
+
+  hasAlly(coord: Coord, color: Color): boolean {
+    const piece = this.getFromCoord(coord);
+
+    if (!piece) return false;
+
+    return piece.color === color;
+  }
+
+  isEmpty(coord: Coord): boolean {
+    const piece = this.getFromCoord(coord);
+
+    return piece === null;
   }
 
   private makeInitialBoard(): Matrix<Piece | null> {

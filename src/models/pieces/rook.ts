@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
 
@@ -10,18 +10,15 @@ export class Rook extends Piece {
     super(color);
   }
 
-  getValidMoves(
-    shiftController: ShiftController,
-    currentCoord: Coord
-  ): Coord[] {
+  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
     const coords: Coord[] = [];
 
     // up
     for (let i = currentCoord.y - 1; i >= 0; i--) {
       const coord = new Coord(currentCoord.x, i);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -32,9 +29,9 @@ export class Rook extends Piece {
     // down
     for (let i = currentCoord.y + 1; i < 8; i++) {
       const coord = new Coord(currentCoord.x, i);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -45,9 +42,9 @@ export class Rook extends Piece {
     // left
     for (let i = currentCoord.x - 1; i >= 0; i--) {
       const coord = new Coord(i, currentCoord.y);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -58,9 +55,9 @@ export class Rook extends Piece {
     // right
     for (let i = currentCoord.x + 1; i < 8; i++) {
       const coord = new Coord(i, currentCoord.y);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
