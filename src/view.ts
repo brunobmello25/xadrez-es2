@@ -6,8 +6,10 @@ export class View {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
-  constructor(private readonly board: Board, private readonly clickHandler: (coord: Coord) => void) {
-  }
+  constructor(
+    private readonly board: Board,
+    private readonly clickHandler: (coord: Coord) => void
+  ) {}
 
   updateBoard() {
     this.renderBoard(this.board);
@@ -73,7 +75,10 @@ export class View {
     let html = "";
 
     let classes = "cell";
-    if (this.selectedCoord !== null && this.selectedCoord.equals(new Coord(x, y))) {
+    if (
+      this.selectedCoord !== null &&
+      this.selectedCoord.equals(new Coord(x, y))
+    ) {
       classes += " selected";
     }
 

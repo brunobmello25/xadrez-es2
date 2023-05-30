@@ -30,7 +30,9 @@ export class Knight implements Piece {
     ];
 
     return potentialMoves.filter((coord) => {
-      return !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord));
+      return (
+        !coord.isOffBoard() && (board.isEmpty(coord) || board.hasEnemy(coord))
+      );
     });
   }
 }

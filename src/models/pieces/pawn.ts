@@ -3,7 +3,6 @@ import { Board } from "../board";
 import { Coord } from "../coord";
 
 export class Pawn implements Piece {
-
   type: PieceType = "pawn";
 
   color: Color;
@@ -24,7 +23,10 @@ export class Pawn implements Piece {
     }
 
     if (this.moveCount == 0) {
-      const doubleForwardCoord = currentCoord.offsetFromCurrent(0, direction * 2);
+      const doubleForwardCoord = currentCoord.offsetFromCurrent(
+        0,
+        direction * 2
+      );
       if (board.isEmpty(doubleForwardCoord)) {
         coords.push(doubleForwardCoord);
       }

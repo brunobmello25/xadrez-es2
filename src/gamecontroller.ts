@@ -24,7 +24,7 @@ export class GameController {
     } else {
       this.handleCellClickWhenNotSelected(coord);
     }
-  
+
     this.view.setHighlightedCells(this.possibleMoves);
     this.view.setSelectedCell(this.selectedCoord);
   }
@@ -34,7 +34,10 @@ export class GameController {
       this.clearSelection();
     } else if (this.board.isFriendly(coord)) {
       this.selectCoord(coord);
-    } else if (this.selectedCoord && this.board.canMove(this.selectedCoord, coord)) {
+    } else if (
+      this.selectedCoord &&
+      this.board.canMove(this.selectedCoord, coord)
+    ) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
       alert("Movimento inválido");
