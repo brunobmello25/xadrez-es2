@@ -19,6 +19,8 @@ export class GameController {
   }
 
   private handleCellClick(coord: Coord) {
+    if (this.board.isAiTurn()) return;
+
     if (this.selectedCoord) {
       this.handleCellClickWhenSelected(coord);
     } else {
