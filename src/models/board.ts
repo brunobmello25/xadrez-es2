@@ -35,14 +35,16 @@ export class Board {
 
         return {
           type: piece.type as PieceType,
-          color: piece.color
+          color: piece.color,
         };
       });
     });
   }
 
   private makeInitialBoard(): Matrix<Piece | null> {
-    const board = Array(8).fill([]).map(() => Array(8).fill(null));
+    const board = Array(8)
+      .fill([])
+      .map(() => Array(8).fill(null));
 
     board[0][0] = new Rook("black");
     board[0][1] = new Knight("black");

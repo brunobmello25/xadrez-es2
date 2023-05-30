@@ -66,7 +66,10 @@ export class View {
     let html = "";
 
     let classes = "cell";
-    if (this.selectedCoord !== null && this.selectedCoord.equals(new Coord(x, y))) {
+    if (
+      this.selectedCoord !== null &&
+      this.selectedCoord.equals(new Coord(x, y))
+    ) {
       classes += " selected";
     }
 
