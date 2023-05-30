@@ -10,7 +10,7 @@ export class King extends Piece {
     super(color);
   }
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
     const potentialMoves = [
       new Coord(currentCoord.x + 1, currentCoord.y + 1),
       new Coord(currentCoord.x + 1, currentCoord.y),

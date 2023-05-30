@@ -24,7 +24,7 @@ export class Board {
 
         if (!piece || piece.color === kingColor) continue;
 
-        const validMoves = piece.getValidMoves(this, coord);
+        const validMoves = piece.getPossibleMoves(this, coord);
 
         if (validMoves.some((move) => move.equals(kingCoord))) {
           return true;
@@ -33,6 +33,52 @@ export class Board {
     }
 
     return false;
+  }
+
+  moveWillPutKingInCheck(kingColor: Color, from: Coord, to: Coord) {
+    const piece = this.getFromCoord(from);
+
+    if (!piece) return false;
+
+    const pieceInTo = this.getFromCoord(to);
+
+    this.setInCoord(to, piece);
+    this.setInCoord(from, null);
+
+    const isCheck = this.isCheck(kingColor);
+
+    this.setInCoord(to, pieceInTo);
+    this.setInCoord(from, piece);
+
+    return isCheck;
+  }
+
+  moveWillRemoveKingFromCheck(kingColor: Color, from: Coord, to: Coord) {
+    const piece = this.getFromCoord(from);
+
+    if (!piece) return false;
+
+    const pieceInTo = this.getFromCoord(to);
+
+    this.setInCoord(to, piece);
+    this.setInCoord(from, null);
+
+    const isCheck = this.isCheck(kingColor);
+
+    this.setInCoord(to, pieceInTo);
+    this.setInCoord(from, piece);
+
+    return !isCheck;
+  }
+
+  getValidMoves(coord: Coord): Coord[] {
+    const piece = this.getFromCoord(coord);
+
+    if (!piece) throw new Error("No piece to get moves");
+
+    return piece
+      .getPossibleMoves(this, coord)
+      .filter((move) => !this.moveWillPutKingInCheck(piece.color, coord, move));
   }
 
   movePiece(from: Coord, to: Coord) {

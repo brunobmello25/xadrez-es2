@@ -10,7 +10,7 @@ export class Bishop extends Piece {
     super(color);
   }
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
     const coords: Coord[] = [];
 
     // up-left

@@ -3,7 +3,6 @@ import { Coord } from "../models/coord";
 import { Engine, Movement } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../shiftcontroller";
-import { Piece } from "../models/pieces";
 
 export class RandomEngine implements Engine {
   constructor(
@@ -35,9 +34,7 @@ export class RandomEngine implements Engine {
         )
           continue;
 
-        const piece = this.board.getFromCoord(coord) as Piece;
-
-        const validPieceMoves = piece.getValidMoves(this.board, coord);
+        const validPieceMoves = this.board.getValidMoves(coord);
 
         validPieceMoves.forEach((to) => {
           possibleMoves.push({

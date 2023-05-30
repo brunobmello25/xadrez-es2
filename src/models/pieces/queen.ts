@@ -10,7 +10,7 @@ export class Queen extends Piece {
     super(color);
   }
 
-  getValidMoves(board: Board, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
     const coords: Coord[] = [];
 
     for (let i = currentCoord.y - 1; i >= 0; i--) {

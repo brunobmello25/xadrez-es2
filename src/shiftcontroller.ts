@@ -1,7 +1,6 @@
 import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Piece } from "./models/pieces";
 import { Color, PlayerType } from "./protocols";
 
 export class ShiftController {
@@ -20,16 +19,15 @@ export class ShiftController {
     this.shift = this.shift === "white" ? "black" : "white";
   }
 
-  getPieceMoves(coord: Coord, piece: Piece) {
-    return piece.getValidMoves(this.board, coord);
+  getPieceMoves(coord: Coord) {
+    return this.board.getValidMoves(coord);
   }
 
   canMove(from: Coord, to: Coord) {
-    const piece = this.board.getFromCoord(from);
+    if (this.board.isEmpty(from)) return false;
+    if (this.board.hasOpponent(from, this.shift)) return false;
 
-    if (!piece) throw new Error("No piece to move");
-
-    const moves = piece.getValidMoves(this.board, from);
+    const moves = this.board.getValidMoves(from);
 
     return moves.some((coord) => coord.equals(to));
   }

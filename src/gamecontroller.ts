@@ -82,11 +82,8 @@ export class GameController {
 
   private selectCoord(coord: Coord) {
     this.selectedCoord = coord;
-    const piece = this.board.getFromCoord(coord);
 
-    if (piece) {
-      this.possibleMoves = this.shiftController.getPieceMoves(coord, piece);
-    }
+    this.possibleMoves = this.shiftController.getPieceMoves(coord);
   }
 
   private moveSelectedPiece(from: Coord, to: Coord) {

@@ -10,7 +10,7 @@ export class Pawn extends Piece {
     super(color);
   }
 
-  getValidMoves(board: Board, currentCoord: Coord) {
+  getPossibleMoves(board: Board, currentCoord: Coord) {
     const coords = [];
     const direction = this.color == "white" ? -1 : 1;
 

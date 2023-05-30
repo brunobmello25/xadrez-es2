@@ -14,7 +14,7 @@ export abstract class Piece {
     this.color = color;
   }
 
-  abstract getValidMoves(board: Board, currentCoord: Coord): Coord[];
+  abstract getPossibleMoves(board: Board, currentCoord: Coord): Coord[];
 
   onMove() {
     this.moveCount += 1;
