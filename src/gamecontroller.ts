@@ -1,9 +1,10 @@
 import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { View } from "./boardview";
+import { Options } from "./models/options";
 import { Engine } from "./protocols";
 import { ShiftController } from "./shiftcontroller";
-import { View } from "./view";
 
 export class GameController {
   private readonly board: Board;
@@ -13,22 +14,25 @@ export class GameController {
 
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
+  private options: Options;
 
-  constructor() {
+  constructor(options: Options) {
     this.board = new Board();
     this.shiftController = new ShiftController(this.board);
     this.view = new View(this.handleCellClick.bind(this));
     this.engine = new RandomEngine(this.board, this.shiftController);
+    this.options = options;
   }
 
   public async start(): Promise<void> {
+    console.log(this.options);
     await this.update();
   }
 
   public async update() {
     this.view.renderBoard(this.board);
 
-    if(this.shiftController.isHumanTurn()) {
+    if (this.shiftController.isHumanTurn()) {
       this.view.bindBoardClickListeners();
     } else {
       await this.engine.playTurn();
@@ -55,7 +59,10 @@ export class GameController {
       this.clearSelection();
     } else if (this.shiftController.hasAlly(coord)) {
       this.selectCoord(coord);
-    } else if (this.selectedCoord && this.shiftController.canMove(this.selectedCoord, coord)) {
+    } else if (
+      this.selectedCoord &&
+      this.shiftController.canMove(this.selectedCoord, coord)
+    ) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
       alert("Movimento inválido");
@@ -79,7 +86,7 @@ export class GameController {
     this.selectedCoord = coord;
     const piece = this.board.getFromCoord(coord);
 
-    if(piece) {
+    if (piece) {
       this.possibleMoves = this.shiftController.getPieceMoves(coord, piece);
     }
   }
