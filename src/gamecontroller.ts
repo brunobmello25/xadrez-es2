@@ -14,7 +14,6 @@ export class GameController {
 
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
-  private options: Options;
 
   private checkMate = false;
   private staleMate = false;
@@ -22,14 +21,12 @@ export class GameController {
 
   constructor(options: Options) {
     this.board = new Board();
-    this.shiftController = new ShiftController(this.board);
-    this.view = new View(this.handleCellClick.bind(this));
+    this.shiftController = new ShiftController(this.board, options);
+    this.view = new View(options, this.handleCellClick.bind(this));
     this.engine = new RandomEngine(this.board, this.shiftController);
-    this.options = options;
   }
 
   public async start(): Promise<void> {
-    console.log(this.options);
     await this.update();
   }
 

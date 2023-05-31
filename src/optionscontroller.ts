@@ -1,13 +1,14 @@
 import { GameController } from "./gamecontroller";
 import { Options } from "./models/options";
 import { View } from "./menuview";
+import { Difficulty, Mode } from "./protocols";
 
 export class OptionsController {
   private readonly options: Options;
   private readonly view: View;
 
   constructor() {
-    this.options = new Options(1, 1);
+    this.options = new Options("easy", "human-computer");
     this.view = new View(
       this.chooseDifficulty.bind(this),
       this.chooseMode.bind(this),
@@ -19,11 +20,11 @@ export class OptionsController {
     this.view.renderOptions(this.options);
   }
 
-  private chooseDifficulty(difficulty: number) {
+  private chooseDifficulty(difficulty: Difficulty) {
     this.options.setDifficulty(difficulty);
   }
 
-  private chooseMode(mode: number) {
+  private chooseMode(mode: Mode) {
     this.options.setMode(mode);
   }
 

@@ -1,6 +1,7 @@
 import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { Options } from "./models/options";
 import { Color, PlayerType } from "./protocols";
 
 export class ShiftController {
@@ -9,7 +10,17 @@ export class ShiftController {
   private whiteType: PlayerType = "human";
   private blackType: PlayerType = "human";
 
-  constructor(private readonly board: Board) {}
+  constructor(
+    private readonly board: Board,
+    private readonly options: Options
+  ) {
+    this.whiteType = "human";
+    if (this.options.mode === "human-human") {
+      this.blackType = "human";
+    } else {
+      this.blackType = "computer";
+    }
+  }
 
   currentShift() {
     return this.shift;

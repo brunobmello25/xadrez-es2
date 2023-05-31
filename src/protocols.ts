@@ -27,3 +27,7 @@ export type ViewPiece = {
 export interface Engine {
   playTurn(): Promise<void>;
 }
+
+export type Difficulty = "easy" | "medium" | "hard";
+
+export type Mode = "human-computer" | "human-human";

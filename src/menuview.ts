@@ -1,11 +1,12 @@
 import { Options } from "./models/options";
+import { Difficulty, Mode } from "./protocols";
 
 export class View {
   constructor(
-    private readonly chooseDifficulty: (id: number) => void,
-    private readonly chooseMode: (id: number) => void,
+    private readonly chooseDifficulty: (difficulty: Difficulty) => void,
+    private readonly chooseMode: (mode: Mode) => void,
     private readonly startGame: () => void
-  ) {}
+  ) { }
 
   renderOptions(options: Options) {
     const target = document.querySelector(".board");
@@ -28,14 +29,14 @@ export class View {
     <div class="options-box">
       <p class="option-title">Dificuldade</p>
       <div class="container">
-        <button class="option difficulty" value=1>Fácil (modo aprendizado)</button>
-        <button class="option difficulty" value=2>Normal</button>
-        <button class="option difficulty" value=3>Difícil</button>
+        <button class="option difficulty" value="easy">Fácil (modo aprendizado)</button>
+        <button class="option difficulty" value="medium">Normal</button>
+        <button class="option difficulty" value="hard">Difícil</button>
       </div>
       <p class="option-title">Modo</p>
       <div class="container">
-        <button class="option mode" value=1>Jogador vs. IA</button>
-        <button class="option mode" value=2>Jogador vs. Jogador</button>
+        <button class="option mode" value="human-computer">Jogador vs. IA</button>
+        <button class="option mode" value="human-human">Jogador vs. Jogador</button>
       </div>
       <div class="container">
         <button class="start">Jogar!</button>
@@ -58,11 +59,10 @@ export class View {
     ) as NodeListOf<HTMLInputElement>;
 
     buttons.forEach((button) => {
-      if (parseInt(button.value) === options.difficulty)
-        button.classList.add("selected");
+      if (button.value === options.difficulty) button.classList.add("selected");
 
       button?.addEventListener("click", () => {
-        this.chooseDifficulty(parseInt(button.value));
+        this.chooseDifficulty(button.value as Difficulty);
         buttons.forEach((button) => {
           button.classList.remove("selected");
         });
@@ -77,11 +77,10 @@ export class View {
     ) as NodeListOf<HTMLInputElement>;
 
     buttons.forEach((button) => {
-      if (parseInt(button.value) === options.mode)
-        button.classList.add("selected");
+      if (button.value === options.mode) button.classList.add("selected");
 
       button?.addEventListener("click", () => {
-        this.chooseMode(parseInt(button.value));
+        this.chooseMode(button.value as Mode);
         buttons.forEach((button) => {
           button.classList.remove("selected");
         });
