@@ -1,18 +1,18 @@
 export class Options {
-  difficulty: Number;
+  difficulty: number;
 
-  mode: Number;
+  mode: number;
 
-  constructor(difficulty: Number, mode: Number) {
+  constructor(difficulty: number, mode: number) {
     this.difficulty = difficulty;
     this.mode = mode;
   }
 
-  setDifficulty(difficulty: Number) {
+  setDifficulty(difficulty: number) {
     this.difficulty = difficulty;
   }
 
-  setMode(mode: Number) {
+  setMode(mode: number) {
     this.mode = mode;
   }
 
