@@ -1,10 +1,10 @@
 import "./styles";
-import { GameController } from "./gamecontroller";
+import { OptionsController } from "./optionscontroller";
 
 function main() {
-  const gameController = new GameController();
+  const menuController = new OptionsController();
 
-  gameController.start();
+  menuController.start();
 }
 
 main();

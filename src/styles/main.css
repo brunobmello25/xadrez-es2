@@ -80,6 +80,58 @@ section {
     height: 100%;
 }
 
+.options-box{
+    background: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 50px;
+}
+
+.options-box .container {
+    display: flex;
+    justify-content: center;
+}
+
+.options-box .option-title{
+    font-weight: 600;
+    font-size: 25px;
+    margin-top: 40px;
+}
+
+.options-box button {
+    cursor: pointer;
+    transition: .2s;
+}
+
+.options-box .option{
+    background: white;
+    color: black;
+    padding: 12px 20px;
+    margin: 0 8px;
+    border: 2px solid black;
+    font-size: 20px;
+    text-transform: lowercase;
+}
+
+.options-box .option:hover, .options-box .option.selected{
+    background: black;
+    color: white;
+}
+
+.options-box .start{
+    color: #d79800;
+    background: transparent;
+    border: none;
+    padding: 12px 20px;
+    margin: 40px;
+    font-weight: 600;
+    font-size: 40px;
+}
+
+.options-box .start:hover{
+    text-decoration: underline;
+}
 
 @media (max-width: 600px) {
     .cell {
