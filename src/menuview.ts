@@ -2,8 +2,8 @@ import { Options } from "./models/options";
 
 export class View {
   constructor(
-    private readonly chooseDifficulty: (id: Number) => void,
-    private readonly chooseMode: (id: Number) => void,
+    private readonly chooseDifficulty: (id: number) => void,
+    private readonly chooseMode: (id: number) => void,
     private readonly startGame: () => void
   ) {}
 

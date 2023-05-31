@@ -1,4 +1,3 @@
-
 import { GameController } from "./gamecontroller";
 import { Options } from "./models/options";
 import { View } from "./menuview";
@@ -20,11 +19,11 @@ export class OptionsController {
     this.view.renderOptions(this.options);
   }
 
-  private chooseDifficulty(difficulty: Number) {
+  private chooseDifficulty(difficulty: number) {
     this.options.setDifficulty(difficulty);
   }
 
-  private chooseMode(mode: Number) {
+  private chooseMode(mode: number) {
     this.options.setMode(mode);
   }
 

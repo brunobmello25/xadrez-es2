@@ -1,26 +1,12 @@
-import { Color, Matrix, Piece, PieceType, ViewPiece } from "../protocols";
+import { Matrix, Piece, PieceType, ViewPiece } from "../protocols";
 import { King, Pawn, Rook, Queen, Bishop, Knight } from "./pieces";
 import { Coord } from "./coord";
 
-
 export class Board {
-
   private boardMatrix: Matrix<Piece | null>;
-
-  private currentShift: Color = "white";
 
   constructor() {
     this.boardMatrix = this.makeInitialBoard();
-  }
-
-  canMove(from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
-
-    if (!piece) throw new Error("No piece to move");
-
-    const moves = piece.getValidMoves(this, from);
-
-    return moves.some((coord) => coord.equals(to));
   }
 
   movePiece(from: Coord, to: Coord) {
@@ -31,20 +17,6 @@ export class Board {
     this.setInCoord(from, null);
     this.setInCoord(to, piece);
     piece.onMove();
-    this.updateShift();
-  }
-
-  isEmpty(coord: Coord) {
-    return this.boardMatrix[coord.y][coord.x] == null;
-  }
-
-  isFriendly(coord: Coord) {
-    return this.boardMatrix[coord.y][coord.x]?.color === this.currentShift;
-  }
-
-  hasEnemy(coord: Coord) {
-    if (this.isEmpty(coord)) return false;
-    return this.boardMatrix[coord.y][coord.x]?.color !== this.currentShift;
   }
 
   getFromCoord(coord: Coord) {
@@ -55,14 +27,6 @@ export class Board {
     this.boardMatrix[coord.y][coord.x] = piece;
   }
 
-  getPieceMoves(pieceCoord: Coord) {
-    const piece = this.getFromCoord(pieceCoord);
-
-    if (!piece) throw new Error("No piece to move");
-
-    return piece.getValidMoves(this, pieceCoord);
-  }
-
   getViewMatrix(): Matrix<ViewPiece | null> {
     return this.boardMatrix.map((line) => {
       return line.map((piece) => {
@@ -70,14 +34,16 @@ export class Board {
 
         return {
           type: piece.type as PieceType,
-          color: piece.color
+          color: piece.color,
         };
       });
     });
   }
 
   private makeInitialBoard(): Matrix<Piece | null> {
-    const board = Array(8).fill([]).map(() => Array(8).fill(null));
+    const board = Array(8)
+      .fill([])
+      .map(() => Array(8).fill(null));
 
     board[0][0] = new Rook("black");
     board[0][1] = new Knight("black");
@@ -108,7 +74,4 @@ export class Board {
     return board;
   }
 
-  private updateShift() {
-    this.currentShift = this.currentShift === "white" ? "black" : "white";
-  }
 }
