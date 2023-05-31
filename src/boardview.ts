@@ -1,12 +1,16 @@
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { Options } from "./models/options";
 import { Color, Matrix, ViewPiece } from "./protocols";
 
 export class View {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
-  constructor(private readonly clickHandler: (coord: Coord) => void) {}
+  constructor(
+    private readonly options: Options,
+    private readonly clickHandler: (coord: Coord) => void
+  ) { }
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
@@ -80,7 +84,12 @@ export class View {
       classes += " selected";
     }
 
-    if (this.highlightedCoords.some((coord) => coord.equals(new Coord(x, y)))) {
+    const shouldHighlightCells = this.options.difficulty === "easy";
+
+    if (
+      shouldHighlightCells &&
+      this.highlightedCoords.some((coord) => coord.equals(new Coord(x, y)))
+    ) {
       classes += " highlighted";
       if (piece != null) {
         classes += " hasEnemy";

@@ -1,18 +1,20 @@
+import { Difficulty, Mode } from "../protocols";
+
 export class Options {
-  difficulty: Number;
+  difficulty: Difficulty;
 
-  mode: Number;
+  mode: Mode;
 
-  constructor(difficulty: Number, mode: Number) {
+  constructor(difficulty: Difficulty, mode: Mode) {
     this.difficulty = difficulty;
     this.mode = mode;
   }
 
-  setDifficulty(difficulty: Number) {
+  setDifficulty(difficulty: Difficulty) {
     this.difficulty = difficulty;
   }
 
-  setMode(mode: Number) {
+  setMode(mode: Mode) {
     this.mode = mode;
   }
 
