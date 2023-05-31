@@ -1,30 +1,23 @@
-import { Color, Piece, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Color, PieceType } from "../../protocols";
+import { Board } from "../board";
 import { Coord } from "../coord";
+import { Piece } from "./piece";
 
-export class Queen implements Piece {
-  moveCount = 0;
-
-  color: Color;
-
+export class Queen extends Piece {
   type: PieceType = "queen";
 
   constructor(color: Color) {
-    this.color = color;
+    super(color);
   }
 
-  onMove() {
-    this.moveCount += 1;
-  }
-
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
     const coords: Coord[] = [];
 
     for (let i = currentCoord.y - 1; i >= 0; i--) {
       const coord = new Coord(currentCoord.x, i);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -35,9 +28,9 @@ export class Queen implements Piece {
     // down
     for (let i = currentCoord.y + 1; i < 8; i++) {
       const coord = new Coord(currentCoord.x, i);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -48,9 +41,9 @@ export class Queen implements Piece {
     // left
     for (let i = currentCoord.x - 1; i >= 0; i--) {
       const coord = new Coord(i, currentCoord.y);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -61,9 +54,9 @@ export class Queen implements Piece {
     // right
     for (let i = currentCoord.x + 1; i < 8; i++) {
       const coord = new Coord(i, currentCoord.y);
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -78,9 +71,9 @@ export class Queen implements Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -96,9 +89,9 @@ export class Queen implements Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -114,9 +107,9 @@ export class Queen implements Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {
@@ -132,9 +125,9 @@ export class Queen implements Piece {
         break;
       }
 
-      if (shiftController.isEmpty(coord)) {
+      if (board.isEmpty(coord)) {
         coords.push(coord);
-      } else if (shiftController.hasOpponent(coord)) {
+      } else if (board.hasOpponent(coord, this.color)) {
         coords.push(coord);
         break;
       } else {

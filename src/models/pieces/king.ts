@@ -1,23 +1,16 @@
-import { Color, Piece, PieceType } from "../../protocols";
-import { ShiftController } from "../../shiftcontroller";
+import { Color, PieceType } from "../../protocols";
+import { Board } from "../board";
 import { Coord } from "../coord";
+import { Piece } from "./piece";
 
-export class King implements Piece {
-  moveCount = 0;
-
-  color: Color;
-
+export class King extends Piece {
   type: PieceType = "king";
 
   constructor(color: Color) {
-    this.color = color;
+    super(color);
   }
 
-  onMove() {
-    this.moveCount += 1;
-  }
-
-  getValidMoves(shiftController: ShiftController, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
     const potentialMoves = [
       new Coord(currentCoord.x + 1, currentCoord.y + 1),
       new Coord(currentCoord.x + 1, currentCoord.y),
@@ -30,7 +23,10 @@ export class King implements Piece {
     ];
 
     return potentialMoves.filter((coord) => {
-      return !coord.isOffBoard() && (shiftController.isEmpty(coord) || shiftController.hasOpponent(coord));
+      return (
+        !coord.isOffBoard() &&
+        (board.isEmpty(coord) || board.hasOpponent(coord, this.color))
+      );
     });
   }
 }

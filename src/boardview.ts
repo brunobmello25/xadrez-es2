@@ -1,13 +1,12 @@
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Matrix, ViewPiece } from "./protocols";
+import { Color, Matrix, ViewPiece } from "./protocols";
 
 export class View {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
-  constructor(private readonly clickHandler: (coord: Coord) => void) {
-  }
+  constructor(private readonly clickHandler: (coord: Coord) => void) {}
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
@@ -15,6 +14,14 @@ export class View {
 
   setSelectedCell(coord: Coord | null) {
     this.selectedCoord = coord;
+  }
+
+  renderCheckMate(winner: Color | null) {
+    alert(`Xeque-mate! Vencedor: ${winner === "white" ? "Branco" : "Preto"}`);
+  }
+
+  renderStaleMate() {
+    alert("Empate!");
   }
 
   renderBoard(board: Board) {

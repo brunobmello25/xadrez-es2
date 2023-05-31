@@ -1,13 +1,13 @@
 import { playerIsComputer, playerIsHuman } from "./helpers";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
-import { Color, Piece, PlayerType } from "./protocols";
+import { Color, PlayerType } from "./protocols";
 
 export class ShiftController {
   private shift: Color = "white";
 
   private whiteType: PlayerType = "human";
-  private blackType: PlayerType = "computer";
+  private blackType: PlayerType = "human";
 
   constructor(private readonly board: Board) {}
 
@@ -19,32 +19,11 @@ export class ShiftController {
     this.shift = this.shift === "white" ? "black" : "white";
   }
 
-  hasOpponent(coord: Coord) {
-    const piece = this.board.getFromCoord(coord);
-
-    return piece && piece.color !== this.shift;
-  }
-
-  hasAlly(coord: Coord) {
-    const piece = this.board.getFromCoord(coord);
-
-    return piece && piece.color === this.shift;
-  }
-
-  isEmpty(coord: Coord) {
-    return !this.board.getFromCoord(coord);
-  }
-
-  getPieceMoves(coord: Coord, piece: Piece) {
-    return piece.getValidMoves(this, coord);
-  }
-
   canMove(from: Coord, to: Coord) {
-    const piece = this.board.getFromCoord(from);
+    if (this.board.isEmpty(from)) return false;
+    if (this.board.hasOpponent(from, this.shift)) return false;
 
-    if (!piece) throw new Error("No piece to move");
-
-    const moves = piece.getValidMoves(this, from);
+    const moves = this.board.getValidMoves(from);
 
     return moves.some((coord) => coord.equals(to));
   }
@@ -61,5 +40,9 @@ export class ShiftController {
       (this.shift === "white" && playerIsComputer(this.whiteType)) ||
       (this.shift === "black" && playerIsComputer(this.blackType))
     );
+  }
+
+  reset() {
+    this.shift = "white";
   }
 }

@@ -1,9 +1,9 @@
 import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
+import { Color, Engine } from "./protocols";
 import { View } from "./boardview";
 import { Options } from "./models/options";
-import { Engine } from "./protocols";
 import { ShiftController } from "./shiftcontroller";
 
 export class GameController {
@@ -15,6 +15,10 @@ export class GameController {
   private selectedCoord: Coord | null = null;
   private possibleMoves: Coord[] = [];
   private options: Options;
+
+  private checkMate = false;
+  private staleMate = false;
+  private winner: Color | null = null;
 
   constructor(options: Options) {
     this.board = new Board();
@@ -29,7 +33,27 @@ export class GameController {
     await this.update();
   }
 
+  public async restart(): Promise<void> {
+    this.checkMate = false;
+    this.staleMate = false;
+    this.winner = null;
+    this.board.reset();
+    this.shiftController.reset();
+    this.clearSelection();
+    this.update();
+  }
+
   public async update() {
+    if (this.checkMate) {
+      this.view.renderCheckMate(this.winner);
+      this.restart();
+      return;
+    } else if (this.staleMate) {
+      this.view.renderStaleMate();
+      this.restart();
+      return;
+    }
+
     this.view.renderBoard(this.board);
 
     if (this.shiftController.isHumanTurn()) {
@@ -37,6 +61,8 @@ export class GameController {
     } else {
       await this.engine.playTurn();
       this.shiftController.updateShift();
+      this.checkCheckMate();
+      this.checkStaleMate();
       this.update();
     }
   }
@@ -57,7 +83,7 @@ export class GameController {
   private handleCellClickWhenSelected(coord: Coord) {
     if (this.selectedCoord?.equals(coord)) {
       this.clearSelection();
-    } else if (this.shiftController.hasAlly(coord)) {
+    } else if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
       this.selectCoord(coord);
     } else if (
       this.selectedCoord &&
@@ -65,14 +91,16 @@ export class GameController {
     ) {
       this.moveSelectedPiece(this.selectedCoord, coord);
     } else {
-      alert("Movimento inválido");
+      this.clearSelection();
     }
   }
 
   private handleCellClickWhenNotSelected(coord: Coord) {
-    if (this.shiftController.hasAlly(coord)) {
+    if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
       this.selectCoord(coord);
-    } else if (this.shiftController.hasOpponent(coord)) {
+    } else if (
+      this.board.hasOpponent(coord, this.shiftController.currentShift())
+    ) {
       alert("Não é possível selecionar uma peça inimiga");
     }
   }
@@ -84,11 +112,8 @@ export class GameController {
 
   private selectCoord(coord: Coord) {
     this.selectedCoord = coord;
-    const piece = this.board.getFromCoord(coord);
 
-    if (piece) {
-      this.possibleMoves = this.shiftController.getPieceMoves(coord, piece);
-    }
+    this.possibleMoves = this.board.getValidMoves(coord);
   }
 
   private moveSelectedPiece(from: Coord, to: Coord) {
@@ -96,5 +121,23 @@ export class GameController {
     this.board.movePiece(from, to);
     this.clearSelection();
     this.shiftController.updateShift();
+    this.checkCheckMate();
+    this.checkStaleMate();
+  }
+
+  private checkStaleMate() {
+    if (this.board.isStaleMate(this.shiftController.currentShift())) {
+      this.staleMate = true;
+    }
+  }
+
+  private checkCheckMate() {
+    if (this.board.isCheckMate("black")) {
+      this.checkMate = true;
+      this.winner = "white";
+    } else if (this.board.isCheckMate("white")) {
+      this.checkMate = true;
+      this.winner = "black";
+    }
   }
 }
