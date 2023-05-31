@@ -3,7 +3,8 @@ import { Options } from "./models/options";
 export class View {
   constructor(
     private readonly chooseDifficulty: (id: Number) => void,
-    private readonly chooseMode: (id: Number) => void
+    private readonly chooseMode: (id: Number) => void,
+    private readonly startGame: () => void
   ) {}
 
   renderOptions(options: Options) {
@@ -14,14 +15,78 @@ export class View {
       return;
     }
 
-    target.innerHTML = this.makeInnerMenuElement(options.getOptions());
+    target.innerHTML = this.makeInnerMenuElement();
+    this.bindDifficultyClick(options.getOptions());
+    this.bindModeButtonClick(options.getOptions());
+    this.bindStartButtonClick();
   }
 
-  private makeInnerMenuElement(options: Options) {
+  private makeInnerMenuElement() {
     let html = "";
 
-    html += `<div class='a'>${options.difficulty} ${options.mode} </div>`;
+    html += `
+    <div class="options-box">
+      <p class="option-title">Dificuldade</p>
+      <div class="container">
+        <button class="option difficulty" value=1>Fácil (modo aprendizado)</button>
+        <button class="option difficulty" value=2>Normal</button>
+        <button class="option difficulty" value=3>Difícil</button>
+      </div>
+      <p class="option-title">Modo</p>
+      <div class="container">
+        <button class="option mode" value=1>Jogador vs. IA</button>
+        <button class="option mode" value=2>Jogador vs. Jogador</button>
+      </div>
+      <div class="container">
+        <button class="start">Jogar!</button>
+      </div>
+    </div>`;
 
     return html;
+  }
+
+  private bindStartButtonClick() {
+    const button = document.querySelector(".start");
+    button?.addEventListener("click", () => {
+      this.startGame();
+    });
+  }
+
+  private bindDifficultyClick(options: Options) {
+    const buttons = document.querySelectorAll(
+      ".difficulty"
+    ) as NodeListOf<HTMLInputElement>;
+
+    buttons.forEach((button) => {
+      if (parseInt(button.value) === options.difficulty)
+        button.classList.add("selected");
+
+      button?.addEventListener("click", () => {
+        this.chooseDifficulty(parseInt(button.value));
+        buttons.forEach((button) => {
+          button.classList.remove("selected");
+        });
+        button.classList.add("selected");
+      });
+    });
+  }
+
+  private bindModeButtonClick(options: Options) {
+    const buttons = document.querySelectorAll(
+      ".mode"
+    ) as NodeListOf<HTMLInputElement>;
+
+    buttons.forEach((button) => {
+      if (parseInt(button.value) === options.mode)
+        button.classList.add("selected");
+
+      button?.addEventListener("click", () => {
+        this.chooseMode(parseInt(button.value));
+        buttons.forEach((button) => {
+          button.classList.remove("selected");
+        });
+        button.classList.add("selected");
+      });
+    });
   }
 }

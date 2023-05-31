@@ -11,7 +11,8 @@ export class OptionsController {
     this.options = new Options(1, 1);
     this.view = new View(
       this.chooseDifficulty.bind(this),
-      this.chooseMode.bind(this)
+      this.chooseMode.bind(this),
+      this.startGame.bind(this)
     );
   }
 
