@@ -81,12 +81,11 @@ section {
 }
 
 .options-box{
-    width: 80vw;
-    height: 80vw;
     background: white;
     display: flex;
     align-items: center;
     flex-direction: column;
+    padding: 10px 50px;
 }
 
 .options-box .container {
