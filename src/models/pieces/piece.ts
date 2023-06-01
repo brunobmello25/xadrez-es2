@@ -1,4 +1,4 @@
-import { Color, PieceType } from "../../protocols";
+import { Color, DumbStatePiece, PieceType } from "../../protocols";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
@@ -18,5 +18,12 @@ export abstract class Piece {
 
   onMove() {
     this.moveCount += 1;
+  }
+
+  toDumbState(): DumbStatePiece {
+    return {
+      type: this.type,
+      color: this.color,
+    };
   }
 }

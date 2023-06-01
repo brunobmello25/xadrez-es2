@@ -19,10 +19,12 @@ export type PieceType =
 
 export type PlayerType = "human" | "computer";
 
-export type ViewPiece = {
+export type DumbStatePiece = {
   color: Color;
   type: PieceType;
 };
+
+export type DumbState = Matrix<DumbStatePiece | null>;
 
 export interface Engine {
   playTurn(): Promise<void>;

@@ -1,5 +1,5 @@
 import { Board, Coord, Options } from "../models";
-import { Color, Matrix, ViewPiece } from "../protocols";
+import { Color, Matrix, DumbStatePiece } from "../protocols";
 
 export class BoardView {
   private selectedCoord: Coord | null = null;
@@ -34,7 +34,7 @@ export class BoardView {
       return;
     }
 
-    target.innerHTML = this.makeInnerBoardElement(board.getViewMatrix());
+    target.innerHTML = this.makeInnerBoardElement(board.getState());
   }
 
   bindBoardClickListeners() {
@@ -57,7 +57,7 @@ export class BoardView {
     });
   }
 
-  private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
+  private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {
     let html = "";
 
     board.forEach((line, y) => {
@@ -71,7 +71,7 @@ export class BoardView {
     return html;
   }
 
-  private makeCellElement(piece: ViewPiece | null, x: number, y: number) {
+  private makeCellElement(piece: DumbStatePiece | null, x: number, y: number) {
     let html = "";
 
     let classes = "cell";
