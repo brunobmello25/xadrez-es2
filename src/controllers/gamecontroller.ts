@@ -33,7 +33,7 @@ export class GameController {
     this.checkMate = false;
     this.staleMate = false;
     this.winner = null;
-    this.board.reset();
+    this.board.reset(makeInitialBoard());
     this.shiftController.reset();
     this.clearSelection();
     this.update();
