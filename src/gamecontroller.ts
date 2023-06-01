@@ -2,8 +2,9 @@ import { RandomEngine } from "./engine/random";
 import { Board } from "./models/board";
 import { Coord } from "./models/coord";
 import { Color, Engine } from "./protocols";
+import { View } from "./boardview";
+import { Options } from "./models/options";
 import { ShiftController } from "./shiftcontroller";
-import { View } from "./view";
 
 export class GameController {
   private readonly board: Board;
@@ -18,10 +19,10 @@ export class GameController {
   private staleMate = false;
   private winner: Color | null = null;
 
-  constructor() {
+  constructor(options: Options) {
     this.board = new Board();
-    this.shiftController = new ShiftController(this.board);
-    this.view = new View(this.handleCellClick.bind(this));
+    this.shiftController = new ShiftController(this.board, options);
+    this.view = new View(options, this.handleCellClick.bind(this));
     this.engine = new RandomEngine(this.board, this.shiftController);
   }
 
