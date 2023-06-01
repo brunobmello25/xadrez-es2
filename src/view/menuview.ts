@@ -1,12 +1,12 @@
-import { Options } from "./models/options";
-import { Difficulty, Mode } from "./protocols";
+import { Options } from "../models";
+import { Difficulty, Mode } from "../protocols";
 
-export class View {
+export class MenuView {
   constructor(
     private readonly chooseDifficulty: (difficulty: Difficulty) => void,
     private readonly chooseMode: (mode: Mode) => void,
     private readonly startGame: () => void
-  ) { }
+  ) {}
 
   renderOptions(options: Options) {
     const target = document.querySelector(".board");

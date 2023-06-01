@@ -2,7 +2,7 @@ import { Board } from "../models/board";
 import { Coord } from "../models/coord";
 import { Engine, Movement } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
-import { ShiftController } from "../shiftcontroller";
+import { ShiftController } from "../controllers";
 
 export class RandomEngine implements Engine {
   constructor(

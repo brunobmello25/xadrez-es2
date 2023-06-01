@@ -1,14 +1,12 @@
-import { RandomEngine } from "./engine/random";
-import { Board } from "./models/board";
-import { Coord } from "./models/coord";
-import { Color, Engine } from "./protocols";
-import { View } from "./boardview";
-import { Options } from "./models/options";
+import { RandomEngine } from "../engine/random";
+import { Board, Coord, Options } from "../models";
+import { Color, Engine } from "../protocols";
+import { BoardView } from "../view";
 import { ShiftController } from "./shiftcontroller";
 
 export class GameController {
   private readonly board: Board;
-  private readonly view: View;
+  private readonly view: BoardView;
   private readonly shiftController: ShiftController;
   private readonly engine: Engine;
 
@@ -22,7 +20,7 @@ export class GameController {
   constructor(options: Options) {
     this.board = new Board();
     this.shiftController = new ShiftController(this.board, options);
-    this.view = new View(options, this.handleCellClick.bind(this));
+    this.view = new BoardView(options, this.handleCellClick.bind(this));
     this.engine = new RandomEngine(this.board, this.shiftController);
   }
 

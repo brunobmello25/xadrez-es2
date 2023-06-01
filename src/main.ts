@@ -1,5 +1,5 @@
 import "./styles";
-import { OptionsController } from "./optionscontroller";
+import { OptionsController } from "./controllers";
 
 function main() {
   const menuController = new OptionsController();

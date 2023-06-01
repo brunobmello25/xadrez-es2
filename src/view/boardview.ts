@@ -1,16 +1,14 @@
-import { Board } from "./models/board";
-import { Coord } from "./models/coord";
-import { Options } from "./models/options";
-import { Color, Matrix, ViewPiece } from "./protocols";
+import { Board, Coord, Options } from "../models";
+import { Color, Matrix, ViewPiece } from "../protocols";
 
-export class View {
+export class BoardView {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
   constructor(
     private readonly options: Options,
     private readonly clickHandler: (coord: Coord) => void
-  ) { }
+  ) {}
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
