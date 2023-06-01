@@ -1,15 +1,15 @@
 import { GameController } from "./gamecontroller";
-import { Options } from "./models/options";
-import { View } from "./menuview";
-import { Difficulty, Mode } from "./protocols";
+import { Options } from "../models";
+import { MenuView } from "../view";
+import { Difficulty, Mode } from "../protocols";
 
 export class OptionsController {
   private readonly options: Options;
-  private readonly view: View;
+  private readonly view: MenuView;
 
   constructor() {
     this.options = new Options("easy", "human-computer");
-    this.view = new View(
+    this.view = new MenuView(
       this.chooseDifficulty.bind(this),
       this.chooseMode.bind(this),
       this.startGame.bind(this)

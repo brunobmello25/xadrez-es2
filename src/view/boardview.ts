@@ -1,16 +1,14 @@
-import { Board } from "./models/board";
-import { Coord } from "./models/coord";
-import { Options } from "./models/options";
-import { Color, Matrix, ViewPiece } from "./protocols";
+import { Board, Coord, Options } from "../models";
+import { Color, Matrix, DumbStatePiece } from "../protocols";
 
-export class View {
+export class BoardView {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
   constructor(
     private readonly options: Options,
     private readonly clickHandler: (coord: Coord) => void
-  ) { }
+  ) {}
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
@@ -36,7 +34,7 @@ export class View {
       return;
     }
 
-    target.innerHTML = this.makeInnerBoardElement(board.getViewMatrix());
+    target.innerHTML = this.makeInnerBoardElement(board.getState());
   }
 
   bindBoardClickListeners() {
@@ -59,7 +57,7 @@ export class View {
     });
   }
 
-  private makeInnerBoardElement(board: Matrix<ViewPiece | null>) {
+  private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {
     let html = "";
 
     board.forEach((line, y) => {
@@ -73,7 +71,7 @@ export class View {
     return html;
   }
 
-  private makeCellElement(piece: ViewPiece | null, x: number, y: number) {
+  private makeCellElement(piece: DumbStatePiece | null, x: number, y: number) {
     let html = "";
 
     let classes = "cell";
