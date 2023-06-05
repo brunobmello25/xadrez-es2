@@ -61,6 +61,30 @@ describe("Board", () => {
       expect(isCheckMate).toBe(false);
     });
   });
+
+  describe(".isCheck", () => {
+    it("should return true when the king is in check", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[0][7] = new Queen("black");
+      const { sut } = makeSut(board);
+
+      const isCheck = sut.isCheck("white");
+
+      expect(isCheck).toBe(true);
+    });
+
+    it("should return false when the king is not in check", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[1][7] = new Queen("black");
+      const { sut } = makeSut(board);
+
+      const isCheck = sut.isCheck("white");
+
+      expect(isCheck).toBe(false);
+    });
+  });
 });
 
 function makeSut(board: Matrix<Piece | null> = makeEmptyBoard()) {
@@ -70,5 +94,7 @@ function makeSut(board: Matrix<Piece | null> = makeEmptyBoard()) {
 }
 
 function makeEmptyBoard(): Matrix<Piece | null> {
-  return Array(8).fill(Array(8).fill(null));
+  return Array.from({ length: 8 }).map(() =>
+    Array.from({ length: 8 }).fill(null)
+  ) as Matrix<Piece | null>;
 }
