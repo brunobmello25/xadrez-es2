@@ -1,5 +1,5 @@
 import { Board } from "../src/models";
-import { King, Piece } from "../src/models/pieces";
+import { King, Piece, Queen } from "../src/models/pieces";
 import { Matrix } from "../src/protocols";
 
 describe("Board", () => {
@@ -34,6 +34,31 @@ describe("Board", () => {
 
       expect(state[0][0]).toEqual(new King("white").toDumbState());
       expect(state[0][1]).toEqual(new King("black").toDumbState());
+    });
+  });
+
+  describe(".isCheckMate", () => {
+    it("should return true when the king is in check and has no possible moves", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[0][1] = new King("black");
+      board[0][2] = new Queen("black");
+      const { sut } = makeSut(board);
+
+      const isCheckMate = sut.isCheckMate("white");
+
+      expect(isCheckMate).toBe(true);
+    });
+
+    it("should return false when the king is in check but has a move that will remove it from check", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[0][1] = new King("black");
+      const { sut } = makeSut(board);
+
+      const isCheckMate = sut.isCheckMate("white");
+
+      expect(isCheckMate).toBe(false);
     });
   });
 });
