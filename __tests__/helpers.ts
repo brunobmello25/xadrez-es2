@@ -1,4 +1,4 @@
-import { makeInitialBoard } from "../src/helpers";
+import { makeInitialBoard, playerIsHuman } from "../src/helpers";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "../src/models/pieces";
 
 describe("helpers", () => {
@@ -12,7 +12,7 @@ describe("helpers", () => {
       }
     });
 
-    it("should return a board with the initial pieces", () => {
+    it("should return a board with the initial pieces in the proper position", () => {
       const board = makeInitialBoard();
 
       expect(board[0][0]).toEqual(new Rook("black"));
@@ -53,6 +53,26 @@ describe("helpers", () => {
       for (let i = 0; i < 8; i++) {
         expect(board[1][i]).not.toBe(board[6][i]);
       }
+    });
+  });
+
+  describe("playerIsHuman", () => {
+    it("should return true when given player is human", () => {
+      expect(playerIsHuman("human")).toBe(true);
+    });
+
+    it("should return false when given player is computer", () => {
+      expect(playerIsHuman("computer")).toBe(false);
+    });
+  });
+
+  describe("playerIsComputer", () => {
+    it("should return true when given player is computer", () => {
+      expect(playerIsHuman("computer")).toBe(false);
+    });
+
+    it("should return false when given player is human", () => {
+      expect(playerIsHuman("human")).toBe(true);
     });
   });
 });
