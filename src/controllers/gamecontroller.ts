@@ -1,3 +1,4 @@
+import { MinmaxEngine } from "../engine/minmax";
 import { RandomEngine } from "../engine/random";
 import { makeInitialBoard } from "../helpers";
 import { Board, Coord, Options } from "../models";
@@ -23,7 +24,12 @@ export class GameController {
     this.board = new Board(makeInitialBoard());
     this.shiftController = new ShiftController(this.board, options);
     this.view = new BoardView(options, this.handleCellClick.bind(this));
-    this.engine = new RandomEngine(this.board, this.shiftController);
+
+    if (options.difficulty === "hard") {
+      this.engine = new MinmaxEngine(this.board, this.shiftController);
+    } else {
+      this.engine = new RandomEngine(this.board, this.shiftController);
+    }
   }
 
   public async start(): Promise<void> {
