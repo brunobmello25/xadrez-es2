@@ -1,5 +1,5 @@
 import { Board } from "../src/models";
-import { King, Piece, Queen } from "../src/models/pieces";
+import { King, Piece, Queen, Rook } from "../src/models/pieces";
 import { Matrix } from "../src/protocols";
 
 describe("Board", () => {
@@ -83,6 +83,33 @@ describe("Board", () => {
       const isCheck = sut.isCheck("white");
 
       expect(isCheck).toBe(false);
+    });
+  });
+
+  describe(".isStaleMate", () => {
+    it("should return true when board is in stalemate state", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[7][1] = new Rook("black");
+      board[1][7] = new Rook("black");
+      board[2][7] = new King("black");
+      const { sut } = makeSut(board);
+
+      const result = sut.isStaleMate("white");
+
+      expect(result).toBe(true);
+    });
+
+    it("should return false when board is not in stalemate state", () => {
+      const board = makeEmptyBoard();
+      board[0][0] = new King("white");
+      board[0][1] = new Rook("black");
+      board[2][7] = new King("black");
+      const { sut } = makeSut(board);
+
+      const result = sut.isStaleMate("white");
+
+      expect(result).toBe(false);
     });
   });
 });
