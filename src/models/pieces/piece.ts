@@ -1,4 +1,5 @@
 import { Color, DumbStatePiece, PieceType } from "../../protocols";
+import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
@@ -14,7 +15,7 @@ export abstract class Piece {
     this.color = color;
   }
 
-  abstract getPossibleMoves(board: Board, currentCoord: Coord): Coord[];
+  abstract getPossibleMoves(board: Board, currentCoord: Coord): Movement[];
 
   onMove() {
     this.moveCount += 1;

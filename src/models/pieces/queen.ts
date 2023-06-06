@@ -1,4 +1,5 @@
 import { Color, PieceType } from "../../protocols";
+import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -10,7 +11,7 @@ export class Queen extends Piece {
     super(color);
   }
 
-  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords: Coord[] = [];
 
     for (let i = currentCoord.y - 1; i >= 0; i--) {
@@ -135,6 +136,6 @@ export class Queen extends Piece {
       }
     }
 
-    return coords;
+    return coords.map((coord) => new Movement(currentCoord, coord));
   }
 }

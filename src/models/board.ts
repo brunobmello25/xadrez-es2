@@ -2,6 +2,7 @@ import { Color, Matrix, DumbState } from "../protocols";
 import { Coord } from "./coord";
 import { Piece } from "./pieces";
 import { BOARD_DIMENSIONS } from "../constants";
+import { Movement } from "./Movement";
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
@@ -33,7 +34,7 @@ export class Board {
 
         if (
           possibleMoves.some((move) =>
-            this.moveWillRemoveKingFromCheck(kingColor, coord, move)
+            this.moveWillRemoveKingFromCheck(kingColor, move)
           )
         ) {
           return false;
@@ -59,7 +60,7 @@ export class Board {
 
         const possibleMoves = piece.getPossibleMoves(this, coord);
 
-        if (possibleMoves.some((move) => move.equals(kingCoord))) {
+        if (possibleMoves.some((move) => move.destination.equals(kingCoord))) {
           return true;
         }
       }
@@ -88,23 +89,23 @@ export class Board {
     return true;
   }
 
-  getValidMoves(coord: Coord): Coord[] {
+  getValidMoves(coord: Coord): Movement[] {
     const piece = this.getFromCoord(coord);
 
     if (!piece) throw new Error("No piece to get moves");
 
     return piece
       .getPossibleMoves(this, coord)
-      .filter((move) => !this.moveWillPutKingInCheck(piece.color, coord, move));
+      .filter((move) => !this.moveWillPutKingInCheck(piece.color, move));
   }
 
-  movePiece(from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
+  movePiece(movement: Movement) {
+    const piece = this.getFromCoord(movement.origin);
 
     if (!piece) throw new Error("No piece to move");
 
-    this.setInCoord(from, null);
-    this.setInCoord(to, piece);
+    this.setInCoord(movement.origin, null);
+    this.setInCoord(movement.destination, piece);
     piece.onMove();
   }
 
@@ -144,42 +145,38 @@ export class Board {
     return piece === null;
   }
 
-  private moveWillPutKingInCheck(kingColor: Color, from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
+  private moveWillPutKingInCheck(kingColor: Color, movement: Movement) {
+    const piece = this.getFromCoord(movement.origin);
 
     if (!piece) return false;
 
-    const pieceInTo = this.getFromCoord(to);
+    const pieceInTo = this.getFromCoord(movement.destination);
 
-    this.setInCoord(to, piece);
-    this.setInCoord(from, null);
+    this.setInCoord(movement.destination, piece);
+    this.setInCoord(movement.origin, null);
 
     const isCheck = this.isCheck(kingColor);
 
-    this.setInCoord(to, pieceInTo);
-    this.setInCoord(from, piece);
+    this.setInCoord(movement.destination, pieceInTo);
+    this.setInCoord(movement.origin, piece);
 
     return isCheck;
   }
 
-  private moveWillRemoveKingFromCheck(
-    kingColor: Color,
-    from: Coord,
-    to: Coord
-  ) {
-    const piece = this.getFromCoord(from);
+  private moveWillRemoveKingFromCheck(kingColor: Color, movement: Movement) {
+    const piece = this.getFromCoord(movement.origin);
 
     if (!piece) return false;
 
-    const pieceInTo = this.getFromCoord(to);
+    const pieceInTo = this.getFromCoord(movement.destination);
 
-    this.setInCoord(to, piece);
-    this.setInCoord(from, null);
+    this.setInCoord(movement.destination, piece);
+    this.setInCoord(movement.origin, null);
 
     const isCheck = this.isCheck(kingColor);
 
-    this.setInCoord(to, pieceInTo);
-    this.setInCoord(from, piece);
+    this.setInCoord(movement.destination, pieceInTo);
+    this.setInCoord(movement.origin, piece);
 
     return !isCheck;
   }

@@ -1,6 +1,7 @@
 import { RandomEngine } from "../engine/random";
 import { makeInitialBoard } from "../helpers";
 import { Board, Coord, Options } from "../models";
+import { Movement } from "../models";
 import { Color, Engine } from "../protocols";
 import { BoardView } from "../view";
 import { ShiftController } from "./shiftcontroller";
@@ -12,7 +13,7 @@ export class GameController {
   private readonly engine: Engine;
 
   private selectedCoord: Coord | null = null;
-  private possibleMoves: Coord[] = [];
+  private possibleMoves: Movement[] = [];
 
   private checkMate = false;
   private staleMate = false;
@@ -70,22 +71,29 @@ export class GameController {
       this.handleCellClickWhenNotSelected(coord);
     }
 
-    this.view.setHighlightedCells(this.possibleMoves);
+    this.view.setHighlightedCells(this.possibleMoves.map((m) => m.destination));
     this.view.setSelectedCell(this.selectedCoord);
 
     this.update();
   }
 
   private handleCellClickWhenSelected(coord: Coord) {
-    if (this.selectedCoord?.equals(coord)) {
+    if (!this.selectedCoord || this.selectedCoord.equals(coord)) {
       this.clearSelection();
-    } else if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
-      this.selectCoord(coord);
-    } else if (
-      this.selectedCoord &&
-      this.shiftController.canMove(this.selectedCoord, coord)
+      return;
+    }
+
+    const movement = new Movement(this.selectedCoord, coord);
+
+    if (
+      this.board.hasAlly(
+        movement.destination,
+        this.shiftController.currentShift()
+      )
     ) {
-      this.moveSelectedPiece(this.selectedCoord, coord);
+      this.selectCoord(movement.destination);
+    } else if (this.selectedCoord && this.shiftController.canMove(movement)) {
+      this.moveSelectedPiece(movement);
     } else {
       this.clearSelection();
     }
@@ -112,9 +120,9 @@ export class GameController {
     this.possibleMoves = this.board.getValidMoves(coord);
   }
 
-  private moveSelectedPiece(from: Coord, to: Coord) {
+  private moveSelectedPiece(movement: Movement) {
     // TODO: move this and all of the player logic to a player engine class
-    this.board.movePiece(from, to);
+    this.board.movePiece(movement);
     this.clearSelection();
     this.shiftController.updateShift();
     this.checkCheckMate();

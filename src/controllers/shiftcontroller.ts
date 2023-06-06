@@ -1,5 +1,6 @@
 import { playerIsComputer, playerIsHuman } from "../helpers";
-import { Board, Coord, Options } from "../models";
+import { Board, Options } from "../models";
+import { Movement } from "../models/Movement";
 import { Color, PlayerType } from "../protocols";
 
 export class ShiftController {
@@ -28,13 +29,15 @@ export class ShiftController {
     this.shift = this.shift === "white" ? "black" : "white";
   }
 
-  canMove(from: Coord, to: Coord) {
-    if (this.board.isEmpty(from)) return false;
-    if (this.board.hasOpponent(from, this.shift)) return false;
+  canMove(movement: Movement) {
+    if (this.board.isEmpty(movement.origin)) return false;
+    if (this.board.hasOpponent(movement.origin, this.shift)) return false;
 
-    const moves = this.board.getValidMoves(from);
+    const moves = this.board.getValidMoves(movement.origin);
 
-    return moves.some((coord) => coord.equals(to));
+    return moves.some((coord) =>
+      coord.destination.equals(movement.destination)
+    );
   }
 
   isHumanTurn() {
