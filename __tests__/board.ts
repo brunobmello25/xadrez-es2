@@ -1,4 +1,4 @@
-import { Board } from "../src/models";
+import { Board, Coord, Movement } from "../src/models";
 import { King, Piece, Queen, Rook } from "../src/models/pieces";
 import { Matrix } from "../src/protocols";
 
@@ -110,6 +110,44 @@ describe("Board", () => {
       const result = sut.isStaleMate("white");
 
       expect(result).toBe(false);
+    });
+  });
+
+  describe(".movePiece", () => {
+    it("should call piece.onMove function", () => {
+      const board = makeEmptyBoard();
+      const piece = new King("white");
+      board[0][0] = piece;
+      board[7][7] = new King("black");
+      const from = new Coord(0, 0);
+      const to = new Coord(0, 1);
+      const movement = new Movement(from, to);
+      // spy on piece superclass
+      const onMoveSpy = jest.spyOn(Piece.prototype, "onMove");
+      const { sut } = makeSut(board);
+
+      sut.movePiece(movement);
+
+      expect(onMoveSpy).toHaveBeenCalled();
+    });
+
+    it("should set origin to null and destination to piece", () => {
+      const board = makeEmptyBoard();
+      const piece = new King("white");
+      board[0][0] = piece;
+      board[7][7] = new King("black");
+      const from = new Coord(0, 0);
+      const to = new Coord(0, 1);
+      const movement = new Movement(from, to);
+      const { sut } = makeSut(board);
+
+      sut.movePiece(movement);
+
+      const state = sut.getState();
+      expect(state[0][0]).toBeNull();
+      expect(state[1][0]?.moveCount).toBe(1);
+      expect(state[1][0]?.color).toBe("white");
+      expect(state[1][0]?.type).toBe("king");
     });
   });
 });

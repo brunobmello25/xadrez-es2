@@ -25,6 +25,7 @@ export abstract class Piece {
     return {
       type: this.type,
       color: this.color,
+      moveCount: this.moveCount,
     };
   }
 }

@@ -15,6 +15,7 @@ export type PlayerType = "human" | "computer";
 export type DumbStatePiece = {
   color: Color;
   type: PieceType;
+  moveCount: number;
 };
 
 export type DumbState = Matrix<DumbStatePiece | null>;
