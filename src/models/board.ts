@@ -88,42 +88,6 @@ export class Board {
     return true;
   }
 
-  moveWillPutKingInCheck(kingColor: Color, from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
-
-    if (!piece) return false;
-
-    const pieceInTo = this.getFromCoord(to);
-
-    this.setInCoord(to, piece);
-    this.setInCoord(from, null);
-
-    const isCheck = this.isCheck(kingColor);
-
-    this.setInCoord(to, pieceInTo);
-    this.setInCoord(from, piece);
-
-    return isCheck;
-  }
-
-  moveWillRemoveKingFromCheck(kingColor: Color, from: Coord, to: Coord) {
-    const piece = this.getFromCoord(from);
-
-    if (!piece) return false;
-
-    const pieceInTo = this.getFromCoord(to);
-
-    this.setInCoord(to, piece);
-    this.setInCoord(from, null);
-
-    const isCheck = this.isCheck(kingColor);
-
-    this.setInCoord(to, pieceInTo);
-    this.setInCoord(from, piece);
-
-    return !isCheck;
-  }
-
   getValidMoves(coord: Coord): Coord[] {
     const piece = this.getFromCoord(coord);
 
@@ -178,6 +142,46 @@ export class Board {
     const piece = this.getFromCoord(coord);
 
     return piece === null;
+  }
+
+  private moveWillPutKingInCheck(kingColor: Color, from: Coord, to: Coord) {
+    const piece = this.getFromCoord(from);
+
+    if (!piece) return false;
+
+    const pieceInTo = this.getFromCoord(to);
+
+    this.setInCoord(to, piece);
+    this.setInCoord(from, null);
+
+    const isCheck = this.isCheck(kingColor);
+
+    this.setInCoord(to, pieceInTo);
+    this.setInCoord(from, piece);
+
+    return isCheck;
+  }
+
+  private moveWillRemoveKingFromCheck(
+    kingColor: Color,
+    from: Coord,
+    to: Coord
+  ) {
+    const piece = this.getFromCoord(from);
+
+    if (!piece) return false;
+
+    const pieceInTo = this.getFromCoord(to);
+
+    this.setInCoord(to, piece);
+    this.setInCoord(from, null);
+
+    const isCheck = this.isCheck(kingColor);
+
+    this.setInCoord(to, pieceInTo);
+    this.setInCoord(from, piece);
+
+    return !isCheck;
   }
 
   private findKing(color: Color): Coord | null {
