@@ -1,8 +1,9 @@
 import { Board } from "../models/board";
 import { Coord } from "../models/coord";
-import { Engine, Movement } from "../protocols";
+import { Engine } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
+import { Movement } from "../models/Movement";
 
 export class RandomEngine implements Engine {
   constructor(
@@ -18,7 +19,7 @@ export class RandomEngine implements Engine {
 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    this.board.movePiece(movement.from, movement.to);
+    this.board.movePiece(movement);
   }
 
   private getAllPossibleMoves(): Movement[] {
@@ -36,11 +37,8 @@ export class RandomEngine implements Engine {
 
         const validPieceMoves = this.board.getValidMoves(coord);
 
-        validPieceMoves.forEach((to) => {
-          possibleMoves.push({
-            from: coord,
-            to,
-          });
+        validPieceMoves.forEach((movement) => {
+          possibleMoves.push(movement);
         });
       }
     }

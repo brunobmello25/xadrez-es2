@@ -1,4 +1,5 @@
 import { Color, PieceType } from "../../protocols";
+import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -10,7 +11,7 @@ export class Rook extends Piece {
     super(color);
   }
 
-  getPossibleMoves(board: Board, currentCoord: Coord): Coord[] {
+  getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords: Coord[] = [];
 
     // up
@@ -65,6 +66,6 @@ export class Rook extends Piece {
       }
     }
 
-    return coords;
+    return coords.map((coord) => new Movement(currentCoord, coord));
   }
 }

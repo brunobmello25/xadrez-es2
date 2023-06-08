@@ -1,4 +1,5 @@
 import { Color, PieceType } from "../../protocols";
+import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -10,7 +11,7 @@ export class Pawn extends Piece {
     super(color);
   }
 
-  getPossibleMoves(board: Board, currentCoord: Coord) {
+  getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords = [];
     const direction = this.color == "white" ? -1 : 1;
 
@@ -39,6 +40,6 @@ export class Pawn extends Piece {
       coords.push(rightDiagonalCoord);
     }
 
-    return coords;
+    return coords.map((coord) => new Movement(currentCoord, coord));
   }
 }
