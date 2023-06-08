@@ -106,7 +106,15 @@ export class Board {
 
     this.setInCoord(movement.origin, null);
     this.setInCoord(movement.destination, piece);
-    piece.onMove();
+
+    if (
+      movement.capturedPieceCoord &&
+      !movement.capturedPieceCoord.equals(movement.destination)
+    ) {
+      this.setInCoord(movement.capturedPieceCoord, null);
+    }
+
+    piece.onMove(movement, this);
   }
 
   getFromCoord(coord: Coord) {

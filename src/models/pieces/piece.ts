@@ -17,7 +17,7 @@ export abstract class Piece {
 
   abstract getPossibleMoves(board: Board, currentCoord: Coord): Movement[];
 
-  onMove() {
+  onMove(_movement: Movement, _board: Board) {
     this.moveCount += 1;
   }
 
