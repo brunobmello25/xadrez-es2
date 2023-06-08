@@ -80,14 +80,12 @@ export class Pawn extends Piece {
     if (leftIsEnPassantable) {
       const leftDestination = left.offsetFromCurrent(0, verticalDirection);
 
-      console.log({ currentCoord, leftDestination, left });
       movements.push(new Movement(currentCoord, leftDestination, left));
     }
 
     if (rightIsEnPassantable) {
       const rightDestination = right.offsetFromCurrent(0, verticalDirection);
 
-      console.log({ currentCoord, rightDestination, right });
       movements.push(new Movement(currentCoord, rightDestination, right));
     }
 
