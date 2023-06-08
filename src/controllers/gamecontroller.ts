@@ -84,21 +84,28 @@ export class GameController {
   }
 
   private handleCellClickWhenSelected(coord: Coord) {
-    if (!this.selectedCoord || this.selectedCoord.equals(coord)) {
+    const selectedCoord = this.selectedCoord;
+
+    if (!selectedCoord || selectedCoord.equals(coord)) {
       this.clearSelection();
       return;
     }
 
-    const movement = new Movement(this.selectedCoord, coord);
+    if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
+      this.selectCoord(coord);
+      return;
+    }
 
-    if (
-      this.board.hasAlly(
-        movement.destination,
-        this.shiftController.currentShift()
-      )
-    ) {
-      this.selectCoord(movement.destination);
-    } else if (this.selectedCoord && this.shiftController.canMove(movement)) {
+    const movement = this.possibleMoves.find((m) =>
+      m.destination.equals(coord)
+    );
+
+    if (!movement) {
+      this.clearSelection();
+      return;
+    }
+
+    if (this.selectedCoord && this.shiftController.canMove(movement)) {
       this.moveSelectedPiece(movement);
     } else {
       this.clearSelection();
