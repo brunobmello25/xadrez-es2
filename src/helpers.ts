@@ -50,3 +50,7 @@ export function makeInitialBoard(): Matrix<Piece | null> {
 
   return board;
 }
+
+export function pickRandom<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
+}

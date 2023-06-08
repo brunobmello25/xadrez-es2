@@ -4,6 +4,7 @@ import { Engine } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
 import { Movement } from "../models/Movement";
+import { pickRandom } from "../helpers";
 
 export class RandomEngine implements Engine {
   constructor(
@@ -14,8 +15,7 @@ export class RandomEngine implements Engine {
   async playTurn(): Promise<void> {
     const possibleMoves = this.getAllPossibleMoves();
 
-    const movement: Movement =
-      possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    const movement: Movement = pickRandom(possibleMoves);
 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
