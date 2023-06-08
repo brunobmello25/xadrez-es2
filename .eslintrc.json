@@ -36,6 +36,12 @@
       "always"
     ],
     "@typescript-eslint/no-empty-function": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
   }
 }
