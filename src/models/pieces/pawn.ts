@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
+import { EnPassantMovement, Movement } from "../movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -80,13 +80,17 @@ export class Pawn extends Piece {
     if (leftIsEnPassantable) {
       const leftDestination = left.offsetFromCurrent(0, verticalDirection);
 
-      movements.push(new Movement(currentCoord, leftDestination, left));
+      movements.push(
+        new EnPassantMovement(currentCoord, leftDestination, left)
+      );
     }
 
     if (rightIsEnPassantable) {
       const rightDestination = right.offsetFromCurrent(0, verticalDirection);
 
-      movements.push(new Movement(currentCoord, rightDestination, right));
+      movements.push(
+        new EnPassantMovement(currentCoord, rightDestination, right)
+      );
     }
 
     return movements;

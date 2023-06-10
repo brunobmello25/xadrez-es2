@@ -2,7 +2,7 @@ import { Color, Matrix, DumbState } from "../protocols";
 import { Coord } from "./coord";
 import { Piece } from "./pieces";
 import { BOARD_DIMENSIONS } from "../constants";
-import { Movement } from "./Movement";
+import { Movement, isEnPassant } from "./movement";
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
@@ -107,11 +107,8 @@ export class Board {
     this.setInCoord(movement.origin, null);
     this.setInCoord(movement.destination, piece);
 
-    if (
-      movement.capturedPieceCoord &&
-      !movement.capturedPieceCoord.equals(movement.destination)
-    ) {
-      this.setInCoord(movement.capturedPieceCoord, null);
+    if (isEnPassant(movement)) {
+      this.setInCoord(movement.capturedPieceDestination, null);
     }
 
     piece.onMove(movement, this);

@@ -1,5 +1,5 @@
 import { Color, DumbStatePiece, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
+import { Movement } from "../movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 

@@ -1,5 +1,5 @@
+import { Movement } from "..";
 import { Color, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
