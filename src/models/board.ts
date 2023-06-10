@@ -1,8 +1,8 @@
 import { Color, Matrix, DumbState } from "../protocols";
 import { Coord } from "./coord";
-import { Piece } from "./pieces";
+import { Piece, Rook } from "./pieces";
 import { BOARD_DIMENSIONS } from "../constants";
-import { Movement, isEnPassant } from "./movement";
+import { Movement, isCastling, isEnPassant } from "./movement";
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
@@ -109,6 +109,10 @@ export class Board {
 
     if (isEnPassant(movement)) {
       this.setInCoord(movement.capturedPieceDestination, null);
+    } else if (isCastling(movement)) {
+      const rook = this.getFromCoord(movement.rookOrigin) as Rook;
+      this.setInCoord(movement.rookOrigin, null);
+      this.setInCoord(movement.rookDestination, rook);
     }
 
     piece.onMove(movement, this);

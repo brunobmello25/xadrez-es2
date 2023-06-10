@@ -91,22 +91,14 @@ export class GameController {
       return;
     }
 
-    if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
-      this.selectCoord(coord);
-      return;
-    }
-
     const movement = this.possibleMoves.find((m) =>
       m.destination.equals(coord)
     );
 
-    if (!movement) {
-      this.clearSelection();
-      return;
-    }
-
-    if (this.selectedCoord && this.shiftController.canMove(movement)) {
+    if (movement) {
       this.moveSelectedPiece(movement);
+    } else if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
+      this.selectCoord(coord);
     } else {
       this.clearSelection();
     }

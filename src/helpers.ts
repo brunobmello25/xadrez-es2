@@ -55,7 +55,10 @@ export function pickRandom<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// assert unknown is Pawn
 export function isPawn(piece: unknown): piece is Pawn {
   return piece instanceof Pawn;
+}
+
+export function isRook(piece: unknown): piece is Rook {
+  return piece instanceof Rook;
 }
