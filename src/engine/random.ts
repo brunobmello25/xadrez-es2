@@ -3,7 +3,7 @@ import { Coord } from "../models/coord";
 import { Engine } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
-import { Movement } from "../models/Movement";
+import { Movement } from "../models";
 import { pickRandom } from "../helpers";
 
 export class RandomEngine implements Engine {

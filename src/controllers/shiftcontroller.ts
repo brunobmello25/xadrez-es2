@@ -1,6 +1,6 @@
 import { playerIsComputer, playerIsHuman } from "../helpers";
 import { Board, Options } from "../models";
-import { Movement } from "../models/Movement";
+import { Movement } from "../models";
 import { Color, PlayerType } from "../protocols";
 
 export class ShiftController {
