@@ -12,6 +12,10 @@ export class Knight extends Piece {
   }
 
   getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
+    return this.getNormalMoves(board, currentCoord);
+  }
+
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const potentialMovesCoords: Coord[] = [
       new Coord(currentCoord.x + 1, currentCoord.y + 2),
       new Coord(currentCoord.x + 2, currentCoord.y + 1),

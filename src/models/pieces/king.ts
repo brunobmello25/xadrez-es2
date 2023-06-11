@@ -20,7 +20,7 @@ export class King extends Piece {
     return [...normalMoves, ...castlingMoves];
   }
 
-  private getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const potentialMoves = [
       new Coord(currentCoord.x + 1, currentCoord.y + 1),
       new Coord(currentCoord.x + 1, currentCoord.y),
@@ -75,7 +75,10 @@ export class King extends Piece {
         x += direction
       ) {
         const coord = new Coord(x, currentCoord.y);
-        if (!board.isEmpty(coord)) {
+        if (
+          !board.isEmpty(coord) ||
+          board.isSquareThreatened(coord, this.color)
+        ) {
           canCastle = false;
           break;
         }

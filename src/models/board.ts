@@ -144,6 +144,23 @@ export class Board {
     else return this.blackKingInCheck;
   }
 
+  isSquareThreatened(square: Coord, kingColor: Color): boolean {
+    const opponentColor = kingColor === "white" ? "black" : "white";
+
+    for (let x = 0; x < BOARD_DIMENSIONS.width; x++) {
+      for (let y = 0; y < BOARD_DIMENSIONS.height; y++) {
+        const coord = new Coord(x, y);
+
+        const piece = this.getFromCoord(coord);
+
+        if (!piece || piece.color !== opponentColor) continue;
+        if (piece.canPieceAttackSquare(this, coord, square)) return true;
+      }
+    }
+
+    return false;
+  }
+
   private calculateCheckStatus(kingColor: Color) {
     const kingCoord = this.findKing(kingColor);
 

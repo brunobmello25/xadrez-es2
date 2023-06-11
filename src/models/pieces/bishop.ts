@@ -12,6 +12,10 @@ export class Bishop extends Piece {
   }
 
   getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
+    return this.getNormalMoves(board, currentCoord);
+  }
+
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords: Coord[] = [];
 
     // up-left

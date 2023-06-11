@@ -15,7 +15,18 @@ export abstract class Piece {
     this.color = color;
   }
 
+  abstract getNormalMoves(board: Board, currentCoord: Coord): Movement[];
+
   abstract getPossibleMoves(board: Board, currentCoord: Coord): Movement[];
+
+  canPieceAttackSquare(
+    board: Board,
+    currentCoord: Coord,
+    square: Coord
+  ): boolean {
+    const normalMoves = this.getNormalMoves(board, currentCoord);
+    return normalMoves.some((move) => move.destination.equals(square));
+  }
 
   onMove(_movement: Movement, _board: Board) {
     this.moveCount += 1;

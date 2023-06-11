@@ -30,7 +30,7 @@ export class Pawn extends Piece {
     ];
   }
 
-  private getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords = [];
     const direction = this.color == "white" ? -1 : 1;
 

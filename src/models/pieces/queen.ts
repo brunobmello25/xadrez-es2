@@ -12,6 +12,10 @@ export class Queen extends Piece {
   }
 
   getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
+    return this.getNormalMoves(board, currentCoord);
+  }
+
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords: Coord[] = [];
 
     for (let i = currentCoord.y - 1; i >= 0; i--) {
