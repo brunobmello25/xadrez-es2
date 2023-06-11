@@ -46,7 +46,7 @@ export class King extends Piece {
     board: Board,
     currentCoord: Coord
   ): CastlingMovement[] {
-    if (this.moveCount > 0) {
+    if (this.moveCount > 0 || board.isKingInCheck(this.color)) {
       return [];
     }
 
