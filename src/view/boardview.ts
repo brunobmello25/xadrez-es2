@@ -1,5 +1,5 @@
 import { Board, Coord, Options } from "../models";
-import { Color, Matrix, DumbStatePiece } from "../protocols";
+import { Color, Matrix, DumbStatePiece, PromotablePiece } from "../protocols";
 
 export class BoardView {
   private selectedCoord: Coord | null = null;
@@ -57,10 +57,8 @@ export class BoardView {
     });
   }
 
-  public showPromotionModal(
-    onChoice: (choice: "queen" | "rook" | "bishop" | "knight") => void
-  ) {
-    // TODO: piece selection here
+  public showPromotionModal(onChoice: (choice: PromotablePiece) => void) {
+    // TODO: render modal and call callback on finish here
 
     onChoice("queen");
   }
