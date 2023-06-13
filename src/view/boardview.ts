@@ -57,10 +57,14 @@ export class BoardView {
     });
   }
 
-  public showPromotionModal(onChoice: (choice: PromotablePiece) => void) {
+  public showPromotionModal(
+    onChoice: (choice: PromotablePiece, color: Color, coord: Coord) => void,
+    color: Color,
+    coord: Coord
+  ) {
     // TODO: render modal and call callback on finish here
 
-    onChoice("queen");
+    onChoice("queen", color, coord);
   }
 
   private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {

@@ -59,12 +59,20 @@ export class GameController {
     }
 
     if (this.board.pieceToPromote) {
+      const color = this.board.pieceToPromote.piece.color;
+      const coord = this.board.pieceToPromote.coord;
+
       if (this.shiftController.isHumanTurn()) {
-        this.view.showPromotionModal(this.handlePromotion.bind(this));
+        this.view.showPromotionModal(
+          this.handlePromotion.bind(this),
+          color,
+          coord
+        );
       } else {
         const promotion = await this.engine.pickPromotionPiece();
-        this.handlePromotion(promotion);
+        this.handlePromotion(promotion, color, coord);
       }
+
       return;
     }
 
@@ -81,14 +89,13 @@ export class GameController {
     }
   }
 
-  private handlePromotion(promotion: PromotablePiece) {
-    if (!this.board.pieceToPromote) throw new Error("No promotable piece");
-
-    const piece = this.createPiece(
-      promotion,
-      this.board.pieceToPromote.piece.color
-    );
-    this.board.setInCoord(this.board.pieceToPromote.coord, piece);
+  private handlePromotion(
+    promotion: PromotablePiece,
+    color: Color,
+    coord: Coord
+  ) {
+    const piece = this.createPiece(promotion, color);
+    this.board.setInCoord(coord, piece);
     this.board.pieceToPromote = null;
 
     this.update();
