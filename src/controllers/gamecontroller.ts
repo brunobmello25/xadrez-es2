@@ -3,7 +3,8 @@ import { RandomEngine } from "../engine/random";
 import { makeInitialBoard } from "../helpers";
 import { Board, Coord, Options } from "../models";
 import { Movement } from "../models";
-import { Color, Engine } from "../protocols";
+import { Bishop, Knight, Queen, Rook } from "../models/pieces";
+import { Color, Engine, PromotablePiece } from "../protocols";
 import { BoardView } from "../view";
 import { ShiftController } from "./shiftcontroller";
 
@@ -57,6 +58,16 @@ export class GameController {
       return;
     }
 
+    if (this.board.pieceToPromote) {
+      if (this.shiftController.isHumanTurn()) {
+        this.view.showPromotionModal(this.handlePromotion.bind(this));
+      } else {
+        const promotion = await this.engine.pickPromotionPiece();
+        this.handlePromotion(promotion);
+      }
+      return;
+    }
+
     this.view.renderBoard(this.board);
 
     if (this.shiftController.isHumanTurn()) {
@@ -68,6 +79,19 @@ export class GameController {
       this.checkStaleMate();
       this.update();
     }
+  }
+
+  private handlePromotion(promotion: PromotablePiece) {
+    if (!this.board.pieceToPromote) throw new Error("No promotable piece");
+
+    const piece = this.createPiece(
+      promotion,
+      this.board.pieceToPromote.piece.color
+    );
+    this.board.setInCoord(this.board.pieceToPromote.coord, piece);
+    this.board.pieceToPromote = null;
+
+    this.update();
   }
 
   private handleCellClick(coord: Coord) {
@@ -148,5 +172,18 @@ export class GameController {
       this.checkMate = true;
       this.winner = "black";
     }
+  }
+
+  private createPiece(type: PromotablePiece, color: Color) {
+    const constructors = {
+      bishop: Bishop,
+      knight: Knight,
+      queen: Queen,
+      rook: Rook,
+    };
+
+    const PieceConstructor = constructors[type];
+
+    return new PieceConstructor(color);
   }
 }

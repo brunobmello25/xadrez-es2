@@ -57,6 +57,14 @@ export class BoardView {
     });
   }
 
+  public showPromotionModal(
+    onChoice: (choice: "queen" | "rook" | "bishop" | "knight") => void
+  ) {
+    // TODO: piece selection here
+
+    onChoice("queen");
+  }
+
   private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {
     let html = "";
 

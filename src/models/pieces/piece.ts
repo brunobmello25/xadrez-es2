@@ -39,4 +39,8 @@ export abstract class Piece {
       moveCount: this.moveCount,
     };
   }
+
+  isPromotable(_coord: Coord): boolean {
+    return false;
+  }
 }

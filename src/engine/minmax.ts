@@ -2,7 +2,7 @@ import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
 import { pickRandom } from "../helpers";
 import { Board, Coord, Movement } from "../models";
-import { Color, DumbState, Engine } from "../protocols";
+import { Color, DumbState, Engine, PromotablePiece } from "../protocols";
 
 export class MinmaxEngine implements Engine {
   private readonly MAX_DEPTH = 5;
@@ -10,7 +10,13 @@ export class MinmaxEngine implements Engine {
   constructor(
     private readonly board: Board,
     private readonly shiftController: ShiftController
-  ) { }
+  ) {}
+
+  async pickPromotionPiece(): Promise<PromotablePiece> {
+    const pieces: PromotablePiece[] = ["queen", "rook", "bishop", "knight"];
+
+    return pickRandom(pieces);
+  }
 
   async playTurn(): Promise<void> {
     const state = this.board.getState();

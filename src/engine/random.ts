@@ -1,16 +1,22 @@
 import { Board } from "../models/board";
 import { Coord } from "../models/coord";
-import { Engine } from "../protocols";
+import { Engine, PromotablePiece } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
 import { Movement } from "../models";
-import { pickRandom } from "../helpers";
+import { isPawn, pickRandom } from "../helpers";
 
 export class RandomEngine implements Engine {
   constructor(
     private readonly board: Board,
     private readonly shiftController: ShiftController
   ) {}
+
+  async pickPromotionPiece(): Promise<PromotablePiece> {
+    const pieces: PromotablePiece[] = ["queen", "rook", "bishop", "knight"];
+
+    return pickRandom(pieces);
+  }
 
   async playTurn(): Promise<void> {
     const possibleMoves = this.getAllPossibleMoves();

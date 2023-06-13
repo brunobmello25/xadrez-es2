@@ -3,12 +3,20 @@ import { Coord } from "./coord";
 import { Piece, Rook } from "./pieces";
 import { BOARD_DIMENSIONS } from "../constants";
 import { Movement, isCastling, isEnPassant } from "./movement";
+import { isPawn } from "../helpers";
+
+type PieceToPromote = {
+  piece: Piece;
+  coord: Coord;
+};
 
 export class Board {
   private boardMatrix: Matrix<Piece | null>;
 
   public whiteKingInCheck: boolean;
   public blackKingInCheck: boolean;
+
+  public pieceToPromote: PieceToPromote | null = null;
 
   constructor(initialBoard: Matrix<Piece | null>) {
     this.boardMatrix = initialBoard;
@@ -97,6 +105,13 @@ export class Board {
       this.setInCoord(movement.rookDestination, rook);
     }
 
+    if (isPawn(piece) && piece.isPromotable(movement.destination)) {
+      this.pieceToPromote = {
+        piece,
+        coord: movement.destination,
+      };
+    }
+
     piece.onMove(movement, this);
 
     this.whiteKingInCheck = this.calculateCheckStatus("white");
@@ -104,6 +119,7 @@ export class Board {
   }
 
   getFromCoord(coord: Coord) {
+    if (coord.isOffBoard()) return null;
     return this.boardMatrix[coord.y][coord.x];
   }
 
