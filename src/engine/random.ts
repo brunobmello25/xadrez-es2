@@ -4,7 +4,7 @@ import { Engine, PromotablePiece } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
 import { Movement } from "../models";
-import { isPawn, pickRandom } from "../helpers";
+import { pickRandom } from "../helpers";
 
 export class RandomEngine implements Engine {
   constructor(
