@@ -3,7 +3,8 @@ import { RandomEngine } from "../engine/random";
 import { makeInitialBoard } from "../helpers";
 import { Board, Coord, Options } from "../models";
 import { Movement } from "../models";
-import { Color, Engine } from "../protocols";
+import { Bishop, Knight, Queen, Rook } from "../models/pieces";
+import { Color, Engine, PromotablePiece } from "../protocols";
 import { BoardView } from "../view";
 import { ShiftController } from "./shiftcontroller";
 
@@ -57,6 +58,24 @@ export class GameController {
       return;
     }
 
+    if (this.board.pieceToPromote) {
+      const color = this.board.pieceToPromote.piece.color;
+      const coord = this.board.pieceToPromote.coord;
+
+      if (this.shiftController.isHumanTurn()) {
+        this.view.showPromotionModal(
+          this.handlePromotion.bind(this),
+          color,
+          coord
+        );
+      } else {
+        const promotion = await this.engine.pickPromotionPiece();
+        this.handlePromotion(promotion, color, coord);
+      }
+
+      return;
+    }
+
     this.view.renderBoard(this.board);
 
     if (this.shiftController.isHumanTurn()) {
@@ -68,6 +87,18 @@ export class GameController {
       this.checkStaleMate();
       this.update();
     }
+  }
+
+  private handlePromotion(
+    promotion: PromotablePiece,
+    color: Color,
+    coord: Coord
+  ) {
+    const piece = this.createPiece(promotion, color);
+    this.board.setInCoord(coord, piece);
+    this.board.pieceToPromote = null;
+
+    this.update();
   }
 
   private handleCellClick(coord: Coord) {
@@ -91,22 +122,14 @@ export class GameController {
       return;
     }
 
-    if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
-      this.selectCoord(coord);
-      return;
-    }
-
     const movement = this.possibleMoves.find((m) =>
       m.destination.equals(coord)
     );
 
-    if (!movement) {
-      this.clearSelection();
-      return;
-    }
-
-    if (this.selectedCoord && this.shiftController.canMove(movement)) {
+    if (movement) {
       this.moveSelectedPiece(movement);
+    } else if (this.board.hasAlly(coord, this.shiftController.currentShift())) {
+      this.selectCoord(coord);
     } else {
       this.clearSelection();
     }
@@ -156,5 +179,18 @@ export class GameController {
       this.checkMate = true;
       this.winner = "black";
     }
+  }
+
+  private createPiece(type: PromotablePiece, color: Color) {
+    const constructors = {
+      bishop: Bishop,
+      knight: Knight,
+      queen: Queen,
+      rook: Rook,
+    };
+
+    const PieceConstructor = constructors[type];
+
+    return new PieceConstructor(color);
   }
 }

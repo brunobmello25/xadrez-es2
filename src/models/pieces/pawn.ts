@@ -1,5 +1,5 @@
 import { Color, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
+import { EnPassantMovement, Movement } from "../movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -11,6 +11,12 @@ export class Pawn extends Piece {
 
   constructor(color: Color) {
     super(color);
+  }
+
+  isPromotable(coord: Coord): boolean {
+    if (this.color === "white" && coord.y === 0) return true;
+    else if (this.color === "black" && coord.y === 7) return true;
+    return false;
   }
 
   public isEnPassantable() {
@@ -30,12 +36,12 @@ export class Pawn extends Piece {
     ];
   }
 
-  private getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords = [];
     const direction = this.color == "white" ? -1 : 1;
 
     const forwardCoord = currentCoord.offsetFromCurrent(0, direction);
-    if (board.isEmpty(forwardCoord)) {
+    if (forwardCoord && board.isEmpty(forwardCoord)) {
       coords.push(forwardCoord);
     }
 
@@ -44,18 +50,21 @@ export class Pawn extends Piece {
         0,
         direction * 2
       );
-      if (board.isEmpty(doubleForwardCoord)) {
+      if (doubleForwardCoord && board.isEmpty(doubleForwardCoord)) {
         coords.push(doubleForwardCoord);
       }
     }
 
     const leftDiagonalCoord = currentCoord.offsetFromCurrent(-1, direction);
-    if (board.hasOpponent(leftDiagonalCoord, this.color)) {
+    if (leftDiagonalCoord && board.hasOpponent(leftDiagonalCoord, this.color)) {
       coords.push(leftDiagonalCoord);
     }
 
     const rightDiagonalCoord = currentCoord.offsetFromCurrent(1, direction);
-    if (board.hasOpponent(rightDiagonalCoord, this.color)) {
+    if (
+      rightDiagonalCoord &&
+      board.hasOpponent(rightDiagonalCoord, this.color)
+    ) {
       coords.push(rightDiagonalCoord);
     }
 
@@ -67,8 +76,8 @@ export class Pawn extends Piece {
     const right = currentCoord.offsetFromCurrent(1, 0);
     const verticalDirection = this.color == "white" ? -1 : 1;
 
-    const pieceOnLeft = board.getFromCoord(left);
-    const pieceOnRight = board.getFromCoord(right);
+    const pieceOnLeft = left && board.getFromCoord(left);
+    const pieceOnRight = right && board.getFromCoord(right);
 
     const leftIsEnPassantable =
       pieceOnLeft instanceof Pawn && pieceOnLeft.isEnPassantable();
@@ -78,15 +87,23 @@ export class Pawn extends Piece {
     const movements: Movement[] = [];
 
     if (leftIsEnPassantable) {
-      const leftDestination = left.offsetFromCurrent(0, verticalDirection);
+      const leftDestination =
+        left && left.offsetFromCurrent(0, verticalDirection);
 
-      movements.push(new Movement(currentCoord, leftDestination, left));
+      if (leftDestination)
+        movements.push(
+          new EnPassantMovement(currentCoord, leftDestination, left)
+        );
     }
 
     if (rightIsEnPassantable) {
-      const rightDestination = right.offsetFromCurrent(0, verticalDirection);
+      const rightDestination =
+        right && right.offsetFromCurrent(0, verticalDirection);
 
-      movements.push(new Movement(currentCoord, rightDestination, right));
+      if (rightDestination)
+        movements.push(
+          new EnPassantMovement(currentCoord, rightDestination, right)
+        );
     }
 
     return movements;
@@ -101,10 +118,12 @@ export class Pawn extends Piece {
     const left = movement.destination.offsetFromCurrent(-1, 0);
     const right = movement.destination.offsetFromCurrent(1, 0);
 
-    const hasEnemyOnLeft = board.hasOpponent(left, this.color);
-    const hasEnemyOnRight = board.hasOpponent(right, this.color);
+    const hasEnemyOnLeft = left && board.hasOpponent(left, this.color);
+    const hasEnemyOnRight = right && board.hasOpponent(right, this.color);
 
     this.enPassantable =
-      wasFirstMove && isDoubleForward && (hasEnemyOnLeft || hasEnemyOnRight);
+      wasFirstMove &&
+      isDoubleForward &&
+      (!!hasEnemyOnLeft || !!hasEnemyOnRight);
   }
 }

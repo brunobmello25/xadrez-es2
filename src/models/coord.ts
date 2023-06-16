@@ -15,7 +15,14 @@ export class Coord {
   }
 
   offsetFromCurrent(xOffset: number, yOffset: number) {
-    return new Coord(this.x + xOffset, this.y + yOffset);
+    const x = this.x + xOffset;
+    const y = this.y + yOffset;
+
+    if (x < 0 || x > 7 || y < 0 || y > 7) {
+      return null;
+    }
+
+    return new Coord(x, y);
   }
 
   isOffBoard() {

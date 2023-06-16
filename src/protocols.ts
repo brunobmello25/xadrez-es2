@@ -10,6 +10,8 @@ export type PieceType =
   | "queen"
   | "king";
 
+export type PromotablePiece = Exclude<PieceType, "pawn" | "king">;
+
 export type PlayerType = "human" | "computer";
 
 export type DumbStatePiece = {
@@ -22,6 +24,8 @@ export type DumbState = Matrix<DumbStatePiece | null>;
 
 export interface Engine {
   playTurn(): Promise<void>;
+
+  pickPromotionPiece(): Promise<PromotablePiece>;
 }
 
 export type Difficulty = "easy" | "medium" | "hard";

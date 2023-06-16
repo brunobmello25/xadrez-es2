@@ -1,5 +1,5 @@
 import { Color, DumbStatePiece, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
+import { Movement } from "../movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 
@@ -15,7 +15,18 @@ export abstract class Piece {
     this.color = color;
   }
 
+  abstract getNormalMoves(board: Board, currentCoord: Coord): Movement[];
+
   abstract getPossibleMoves(board: Board, currentCoord: Coord): Movement[];
+
+  canPieceAttackSquare(
+    board: Board,
+    currentCoord: Coord,
+    square: Coord
+  ): boolean {
+    const normalMoves = this.getNormalMoves(board, currentCoord);
+    return normalMoves.some((move) => move.destination.equals(square));
+  }
 
   onMove(_movement: Movement, _board: Board) {
     this.moveCount += 1;
@@ -27,5 +38,9 @@ export abstract class Piece {
       color: this.color,
       moveCount: this.moveCount,
     };
+  }
+
+  isPromotable(_coord: Coord): boolean {
+    return false;
   }
 }

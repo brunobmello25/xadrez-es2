@@ -1,5 +1,5 @@
+import { Movement } from "..";
 import { Color, PieceType } from "../../protocols";
-import { Movement } from "../Movement";
 import { Board } from "../board";
 import { Coord } from "../coord";
 import { Piece } from "./piece";
@@ -12,6 +12,10 @@ export class Bishop extends Piece {
   }
 
   getPossibleMoves(board: Board, currentCoord: Coord): Movement[] {
+    return this.getNormalMoves(board, currentCoord);
+  }
+
+  getNormalMoves(board: Board, currentCoord: Coord): Movement[] {
     const coords: Coord[] = [];
 
     // up-left

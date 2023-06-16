@@ -1,4 +1,10 @@
-import { Board, Coord, Movement } from "../src/models";
+import {
+  Board,
+  Coord,
+  isEnPassant,
+  EnPassantMovement,
+  Movement,
+} from "../src/models";
 import { makeInitialBoard, isPawn } from "../src/helpers";
 
 describe("En Passant", () => {
@@ -17,8 +23,14 @@ describe("En Passant", () => {
     if (isPawn(captured) && isPawn(capturing)) {
       expect(captured.isEnPassantable()).toBe(true);
       const capturingMoves = capturing.getPossibleMoves(board, capturingCoord);
+      const enPassantMove = capturingMoves.find((m) => isEnPassant(m));
+      if (!enPassantMove) {
+        fail();
+      }
       expect(
-        capturingMoves.some((m) => m.capturedPieceCoord?.equals(capturedCoord))
+        (enPassantMove as EnPassantMovement).capturedPieceDestination.equals(
+          capturedCoord
+        )
       ).toBe(true);
     } else {
       fail();
@@ -35,19 +47,10 @@ describe("En Passant", () => {
     board.movePiece(new Movement(new Coord(3, 1), nonCapturingCoord));
 
     const pawn = board.getFromCoord(pawnCoord);
-    const nonCapturing = board.getFromCoord(nonCapturingCoord);
 
-    if (isPawn(pawn) && isPawn(nonCapturing)) {
-      expect(pawn.isEnPassantable()).toBe(false);
-      const nonCapturingMoves = nonCapturing.getPossibleMoves(
-        board,
-        nonCapturingCoord
-      );
-      expect(
-        nonCapturingMoves.some((m) => m.capturedPieceCoord?.equals(pawnCoord))
-      ).toBe(false);
-    } else {
-      fail();
+    if (isPawn(pawn)) {
+      const movements = pawn.getPossibleMoves(board, pawnCoord);
+      expect(movements.find((m) => isEnPassant(m))).toBeUndefined();
     }
   });
 });

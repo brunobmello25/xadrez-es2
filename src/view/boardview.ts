@@ -1,5 +1,5 @@
 import { Board, Coord, Options } from "../models";
-import { Color, Matrix, DumbStatePiece } from "../protocols";
+import { Color, Matrix, DumbStatePiece, PromotablePiece } from "../protocols";
 
 export class BoardView {
   private selectedCoord: Coord | null = null;
@@ -55,6 +55,16 @@ export class BoardView {
         this.clickHandler(new Coord(x, y));
       });
     });
+  }
+
+  public showPromotionModal(
+    onChoice: (choice: PromotablePiece, color: Color, coord: Coord) => void,
+    color: Color,
+    coord: Coord
+  ) {
+    // TODO: render modal and call callback on finish here
+
+    onChoice("queen", color, coord);
   }
 
   private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {

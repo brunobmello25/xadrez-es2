@@ -1,9 +1,9 @@
 import { Board } from "../models/board";
 import { Coord } from "../models/coord";
-import { Engine } from "../protocols";
+import { Engine, PromotablePiece } from "../protocols";
 import { BOARD_DIMENSIONS } from "../constants";
 import { ShiftController } from "../controllers";
-import { Movement } from "../models/Movement";
+import { Movement } from "../models";
 import { pickRandom } from "../helpers";
 
 export class RandomEngine implements Engine {
@@ -11,6 +11,12 @@ export class RandomEngine implements Engine {
     private readonly board: Board,
     private readonly shiftController: ShiftController
   ) {}
+
+  async pickPromotionPiece(): Promise<PromotablePiece> {
+    const pieces: PromotablePiece[] = ["queen", "rook", "bishop", "knight"];
+
+    return pickRandom(pieces);
+  }
 
   async playTurn(): Promise<void> {
     const possibleMoves = this.getAllPossibleMoves();

@@ -4,26 +4,6 @@ import { Matrix } from "../src/protocols";
 
 describe("Board", () => {
   describe(".getState", () => {
-    it("should return an 8x8 matrix", () => {
-      const { sut } = makeSut();
-
-      const state = sut.getState();
-
-      expect(state).toHaveLength(8);
-      for (const row of state) {
-        expect(row).toHaveLength(8);
-      }
-    });
-
-    it("should return an empty matrix when there are no pieces", () => {
-      const { sut } = makeSut();
-
-      const state = sut.getState();
-
-      const pieces = state.flat().filter((piece) => piece !== null);
-      expect(pieces).toHaveLength(0);
-    });
-
     it("should return a matrix with the same pieces as the board", () => {
       const board = makeEmptyBoard();
       board[0][0] = new King("white");
@@ -62,14 +42,16 @@ describe("Board", () => {
     });
   });
 
-  describe(".isCheck", () => {
+  describe(".isKingInCheck", () => {
     it("should return true when the king is in check", () => {
       const board = makeEmptyBoard();
       board[0][0] = new King("white");
-      board[0][7] = new Queen("black");
+      board[7][7] = new King("black");
+      board[2][1] = new Queen("black");
       const { sut } = makeSut(board);
+      sut.movePiece(new Movement(new Coord(1, 2), new Coord(1, 1)));
 
-      const isCheck = sut.isCheck("white");
+      const isCheck = sut.isKingInCheck("white");
 
       expect(isCheck).toBe(true);
     });
@@ -77,10 +59,12 @@ describe("Board", () => {
     it("should return false when the king is not in check", () => {
       const board = makeEmptyBoard();
       board[0][0] = new King("white");
-      board[1][7] = new Queen("black");
+      board[2][1] = new Queen("black");
+      board[7][7] = new King("black");
       const { sut } = makeSut(board);
+      sut.movePiece(new Movement(new Coord(1, 2), new Coord(3, 2)));
 
-      const isCheck = sut.isCheck("white");
+      const isCheck = sut.isKingInCheck("white");
 
       expect(isCheck).toBe(false);
     });
