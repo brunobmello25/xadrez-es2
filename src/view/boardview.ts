@@ -1,12 +1,6 @@
 import { toHumanName } from "../helpers";
 import { Board, Coord, Options } from "../models";
-import {
-  Color,
-  Matrix,
-  DumbStatePiece,
-  PromotablePiece,
-  PieceType,
-} from "../protocols";
+import { Color, Matrix, DumbStatePiece, PromotablePiece } from "../protocols";
 
 export class BoardView {
   private selectedCoord: Coord | null = null;
