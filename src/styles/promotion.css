@@ -1,0 +1,32 @@
+.promotion-modal {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+
+}
+
+.promotion-modal h2 {
+  color: #d79800;
+}
+
+.promotion-modal .choices-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.promotion-choice {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}

@@ -1,3 +1,4 @@
+import { toHumanName } from "../helpers";
 import { Board, Coord, Options } from "../models";
 import { Color, Matrix, DumbStatePiece, PromotablePiece } from "../protocols";
 
@@ -5,10 +6,14 @@ export class BoardView {
   private selectedCoord: Coord | null = null;
   private highlightedCoords: Coord[] = [];
 
+  private promotionModal: HTMLDivElement | null = null;
+
   constructor(
     private readonly options: Options,
     private readonly clickHandler: (coord: Coord) => void
-  ) {}
+  ) {
+    this.createPromotionModal();
+  }
 
   setHighlightedCells(coords: Coord[]) {
     this.highlightedCoords = coords;
@@ -62,9 +67,30 @@ export class BoardView {
     color: Color,
     coord: Coord
   ) {
-    // TODO: render modal and call callback on finish here
+    if (!this.promotionModal) {
+      alert(
+        "Falha ao escolher peça de promoção, escolhendo rainha por padrão."
+      );
+      onChoice("queen", color, coord);
+      return;
+    }
 
-    onChoice("queen", color, coord);
+    this.promotionModal.style.display = "block";
+
+    const buttons = this.promotionModal.querySelectorAll(".promotion-choice");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const choice = (e.target as HTMLButtonElement).dataset
+          .piecetype as PromotablePiece;
+
+        if (this.promotionModal) {
+          this.promotionModal.style.display = "none";
+        }
+
+        onChoice(choice, color, coord);
+      });
+    });
   }
 
   private makeInnerBoardElement(board: Matrix<DumbStatePiece | null>) {
@@ -113,5 +139,27 @@ export class BoardView {
     html += "</div>";
 
     return html;
+  }
+
+  private createPromotionModal() {
+    let promotionModal = '<div class="promotion-modal" style="display: none;">';
+
+    promotionModal += `<h2>Escolha uma peça para promoção</h2>`;
+
+    promotionModal += `<div class="choices-container">`;
+
+    const pieces: PromotablePiece[] = ["bishop", "knight", "queen", "rook"];
+
+    pieces.forEach((piece) => {
+      promotionModal += `<button class="promotion-choice promotion-${piece}" data-piecetype="${piece}">${toHumanName(
+        piece
+      )}</button>`;
+    });
+
+    promotionModal += "</div></div>";
+
+    document.body.innerHTML += promotionModal;
+
+    this.promotionModal = document.querySelector(".promotion-modal");
   }
 }

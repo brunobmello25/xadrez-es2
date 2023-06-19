@@ -7,7 +7,7 @@ import {
   Queen,
   Rook,
 } from "./models/pieces";
-import { Matrix, PlayerType } from "./protocols";
+import { Matrix, PieceType, PlayerType } from "./protocols";
 
 export function playerIsHuman(player: PlayerType): player is "human" {
   return player === "human";
@@ -61,4 +61,13 @@ export function isPawn(piece: unknown): piece is Pawn {
 
 export function isRook(piece: unknown): piece is Rook {
   return piece instanceof Rook;
+}
+
+export function toHumanName(piece: PieceType): string {
+  if (piece === "pawn") return "Peão";
+  if (piece === "rook") return "Torre";
+  if (piece === "knight") return "Cavalo";
+  if (piece === "bishop") return "Bispo";
+  if (piece === "queen") return "Rainha";
+  return "Rei";
 }
