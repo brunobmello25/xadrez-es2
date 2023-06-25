@@ -13,3 +13,9 @@
 - [Node.js](https://nodejs.org) - Ambiente de execução Javascript server-side
 - [Vite](https://vitejs.dev) - Ferramental para transpilação e empacotamento do código
 
+## Como rodar os testes
+
+- instalar as dependências do projeto com o comando `npx cypress open`
+- selecionar o "E2E Testing"
+- rodar no Chrome
+- selecionar `spec.cy.ts`
