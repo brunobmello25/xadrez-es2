@@ -15,7 +15,7 @@
 
 ## Como rodar os testes
 
-- instalar as dependências do projeto com o comando `npx cypress open`
+- abrir o cypress com o comando `npx cypress open`
 - selecionar o "E2E Testing"
 - rodar no Chrome
 - selecionar `spec.cy.ts`
